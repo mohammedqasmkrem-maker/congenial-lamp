@@ -9,7 +9,7 @@ st.set_page_config(page_title="تحدي الـ 1000 كلمة", layout="centered"
 @st.cache_data
 def load_data():
     # هنا الكود يقرأ الملف بالاسم السهل اللي اختاريته
-    return pd.read_csv('vocab.csv')
+    return pd.read_csv('1000_english_words-3.txt')
 
 try:
     df = load_data()
