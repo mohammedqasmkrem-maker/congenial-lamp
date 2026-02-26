@@ -5,79 +5,105 @@ import os
 import time
 import urllib.parse
 
-# إعداد الصفحة
-st.set_page_config(page_title="أكاديمية اللغة", layout="wide")
+# 1. إعدادات الصفحة (تجعلها تعمل كـ تطبيق موبايل)
+st.set_page_config(page_title="أكاديمية الـ 1000 كلمة", layout="wide")
 
-# إدارة الحالة والنقاط
-if 'score' not in st.session_state: st.session_state.score = 0
-if 'page' not in st.session_state: st.session_state.page = "home"
-if 'prizes' not in st.session_state: st.session_state.prizes = []
-
-# تحميل البيانات
+# 2. وظيفة تحميل الكلمات (ضمان العمل حتى بدون ملف خارجي)
+@st.cache_data
 def load_data():
-    if os.path.exists('vocab.csv'):
-        return pd.read_csv('vocab.csv', header=None, names=['full_line'], sep='|', engine='python')
-    return pd.DataFrame({'full_line': ['Apple - تفاحة', 'Smart - ذكي', 'Success - نجاح']})
+    file_path = 'vocab.csv'
+    if os.path.exists(file_path):
+        try:
+            # محاولة قراءة ملفك
+            df = pd.read_csv(file_path, header=None, names=['full_line'], sep='|', engine='python')
+            return df
+        except:
+            pass
+    
+    # إذا لم يجد الملف، يستخدم هذه الكلمات لكي "يشتغل" التطبيق ولا يبقى صورة
+    return pd.DataFrame({'full_line': [
+        'Apple - تفاحة', 'Smart - ذكي', 'Success - نجاح', 
+        'School - مدرسة', 'Book - كتاب', 'Water - ماء'
+    ]})
 
 df = load_data()
 
-# --- الواجهة الرئيسية (تظهر فوراً) ---
-if st.session_state.page == "home":
-    st.markdown("<h1 style='text-align: center; color: #007bff;'>👋 أهلاً بك في الأكاديمية!</h1>", unsafe_allow_html=True)
-    st.write("##")
+# إدارة النقاط والصفحات
+if 'score' not in st.session_state: st.session_state.score = 0
+if 'prizes' not in st.session_state: st.session_state.prizes = []
+
+# --- 3. القائمة الجانبية (Sidebar) للتنقل الفعلي ---
+with st.sidebar:
+    st.header("🎮 لوحة التحكم")
+    menu = st.radio("انتقل إلى الصفحات:", 
+                    ["🏠 الرئيسية", "🎯 التحدي (30 ثانية)", "📖 البحث في القاموس", "🏆 إنجازاتي"])
     
-    # مربعات الاختيار في وسط الشاشة
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🎮 ابدأ التحدي\n(30 ثانية)", use_container_width=True):
-            st.session_state.page = "game"
-            st.session_state.start_time = time.time()
-            st.rerun()
-    with col2:
-        if st.button("📖 القاموس\n(البحث السريع)", use_container_width=True):
-            st.session_state.page = "dict"
-            st.rerun()
-            
-    # قسم الجوائز والإحصائيات
     st.write("---")
-    with st.expander("⚙️ إحصائياتك وجوائزك"):
-        c1, c2 = st.columns(2)
-        c1.metric("نقاطك الحالية 🏆", st.session_state.score)
-        stage = "مبتدئ 🌱" if st.session_state.score < 100 else "محترف 🔥"
-        c2.metric("المرحلة", stage)
-        st.write("**الأوسمة:** " + (", ".join(st.session_state.prizes) if st.session_state.prizes else "لا توجد بعد"))
-
-elif st.session_state.page == "game":
-    st.title("🎯 تحدي الـ 30 ثانية")
-    rem = max(0, 30 - int(time.time() - st.session_state.start_time))
-    st.progress(rem / 30)
-    st.subheader(f"⏳ الوقت المتبقي: {rem} ثانية")
+    st.metric("نقاطك الحالية", st.session_state.score)
     
+    # روابط المشاركة المباشرة
+    st.subheader("📢 انشر التطبيق")
+    app_url = "https://mohammedqasmkrem-maker.streamlit.app"
+    msg = urllib.parse.quote(f"تحدي الـ 1000 كلمة! جرب مستواك معي: {app_url}")
+    st.markdown(f"[🟢 واتساب](https://api.whatsapp.com/send?text={msg})")
+    st.markdown(f"[✈️ تليجرام](https://t.me/share/url?url={app_url}&text={msg})")
+
+# --- 4. تشغيل الصفحات (المحتوى التفاعلي) ---
+
+if menu == "🏠 الرئيسية":
+    st.markdown("<h1 style='text-align: center;'>👋 أهلاً بك في تطبيقك الشغال</h1>", unsafe_allow_html=True)
+    st.info("اختر 'التحدي' من القائمة الجانبية لتبدأ اللعب، أو 'القاموس' للبحث.")
+    st.success(f"لديك الآن {len(df)} كلمة جاهزة للاختبار!")
+
+elif menu == "🎯 التحدي (30 ثانية)":
+    st.title("🎯 ابدأ الاختبار الآن")
+    
+    if st.button("كلمة جديدة 🔄") or 'word_to_guess' not in st.session_state:
+        st.session_state.word_to_guess = random.choice(df['full_line'].values)
+        st.session_state.start_t = time.time()
+        st.session_state.checked = False
+        st.rerun()
+
+    # المؤقت الحقيقي
+    rem = max(0, 30 - int(time.time() - st.session_state.start_t))
+    st.progress(rem / 30)
+    st.write(f"⏳ الوقت المتبقي: {rem} ثانية")
+
     if rem == 0:
-        st.error("⏰ انتهى الوقت!")
-        if st.button("العودة للقائمة الرئيسية"): st.session_state.page = "home"; st.rerun()
+        st.error("⏰ انتهى الوقت! اضغط 'كلمة جديدة'")
     else:
-        # (هنا يوضع كود السؤال والجواب الذي برمجناه سابقاً)
-        st.info("اكتب معنى الكلمة التي تظهر لك!")
+        line = st.session_state.word_to_guess
+        eng = line.split('-')[0].strip()
+        arb = line.split('-')[1].strip() if '-' in line else "غير مترجم"
+        
+        st.subheader(f"ما معنى الكلمة: {eng}؟")
+        ans = st.text_input("اكتب الحل بالعربي:").strip()
+        
+        if st.button("تحقق ✅"):
+            if ans == arb:
+                st.success("إجابة صحيحة! +20 نقطة")
+                st.session_state.score += 20
+                if st.session_state.score % 100 == 0:
+                    st.session_state.prizes.append(f"وسام الـ {st.session_state.score} 🎖️")
+                    st.balloons()
+            else:
+                st.error(f"خطأ! الجواب هو: {arb}")
 
-elif st.session_state.page == "dict":
-    st.title("📖 القاموس الذكي")
-    if st.button("⬅️ عودة"): st.session_state.page = "home"; st.rerun()
-    search = st.text_input("🔍 ابحث عن كلمة:")
-    if search:
-        st.table(df[df['full_line'].str.contains(search, case=False)])
+elif menu == "📖 البحث في القاموس":
+    st.title("📖 القاموس التفاعلي")
+    query = st.text_input("🔍 ابحث عن كلمة:")
+    if query:
+        results = df[df['full_line'].str.contains(query, case=False)]
+        st.table(results)
+    else:
+        st.write("اكتب شيئاً للبحث عنه...")
 
-# --- قسم روابط المشاركة (أسفل الشاشة) ---
-st.write("---")
-st.markdown("<p style='text-align: center;'>📢 انشر التحدي مع أصدقائك</p>", unsafe_allow_html=True)
-
-# هذا الكود سيجلب رابط تطبيقك الحقيقي تلقائياً
-# إذا لم يعمل التلقائي، استبدل الرابط أدناه برابطك من المتصفح
-real_app_url = "https://mohammedqasmkrem-maker.streamlit.app" 
-share_text = urllib.parse.quote(f"تحديت نفسي في أكاديمية الـ 1000 كلمة! جرب مستواك معي: {real_app_url}")
-
-c_wa, c_tg = st.columns(2)
-with c_wa:
-    st.markdown(f"[![واتساب](https://img.shields.io/badge/WhatsApp-Share-25D366?style=for-the-badge&logo=whatsapp)](https://api.whatsapp.com/send?text={share_text})", unsafe_allow_html=True)
-with c_tg:
-    st.markdown(f"[![تليجرام](https://img.shields.io/badge/Telegram-Share-26A5E4?style=for-the-badge&logo=telegram)](https://t.me/share/url?url={real_app_url}&text={share_text})", unsafe_allow_html=True)
+elif menu == "🏆 إنجازاتي":
+    st.title("🏆 لوحة الشرف")
+    st.write(f"مجموع نقاطك: {st.session_state.score}")
+    if st.session_state.prizes:
+        for p in st.session_state.prizes:
+            st.success(p)
+    else:
+        st.write("لم تحصل على جوائز بعد.")
+    
