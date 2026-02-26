@@ -1,90 +1,83 @@
 import streamlit as st
 import pandas as pd
 import random
+import os
+import urllib.parse
 
-# إعدادات الصفحة
+# إعداد الصفحة
 st.set_page_config(page_title="أكاديمية الـ 1000 كلمة", layout="wide", page_icon="🎓")
 
-# 1. دالة تحميل البيانات وتقسيم المستويات
+# دالة تحميل البيانات
 @st.cache_data
 def load_data():
-    try:
-        # قراءة الملف (الرقم والكلمة والترجمة) كسطر واحد
-        df = pd.read_csv('vocab.csv', header=None, names=['full_line'], sep='|', engine='python')
-        # تقسيم المستويات تلقائياً
-        df['level'] = 'سهل'
-        df.loc[300:700, 'level'] = 'متوسط'
-        df.loc[700:, 'level'] = 'صعب'
-        return df
-    except:
-        return None
+    file_name = 'vocab.csv'
+    if os.path.exists(file_name):
+        try:
+            df = pd.read_csv(file_name, header=None, names=['full_line'], sep='|', engine='python')
+            df['level'] = 'سهل'
+            if len(df) > 300: df.loc[300:700, 'level'] = 'متوسط'
+            if len(df) > 700: df.loc[700:, 'level'] = 'صعب'
+            return df
+        except: return None
+    return None
 
 df = load_data()
 
-# 2. القائمة الجانبية (التقييم والمشاركة)
-st.sidebar.title("📊 لوحة التحكم")
+# --- القائمة الجانبية المحدثة ---
+st.sidebar.title("📊 مركز التحكم")
 
-# نظام التقييم بالنجوم
-st.sidebar.subheader("⭐ قيم تجربتك")
-star_rating = st.sidebar.select_slider("اختر النجوم:", options=[1, 2, 3, 4, 5], value=5)
-if st.sidebar.button("إرسال التقييم"):
-    st.sidebar.success(f"شكراً! تم تسجيل {star_rating} نجوم")
-
-st.sidebar.markdown("---")
-
-# زر المشاركة عبر الواتساب
-st.sidebar.subheader("📢 انشر التطبيق")
-app_url = "https://your-app-link.streamlit.app" # استبدل هذا برابط تطبيقك من شريط المتصفح
-share_msg = f"تعال جرب 'أكاديمية الـ 1000 كلمة'.. تطبيق رهيب لتعلم الإنجليزية! {app_url}"
-whatsapp_link = f"https://wa.me/?text={share_msg}"
-st.sidebar.markdown(f'[📲 مشاركة عبر الواتساب]({whatsapp_link})')
+# نظام التقييم
+st.sidebar.subheader("⭐ تقييمك يهمنا")
+rating = st.sidebar.select_slider("النجوم:", options=[1, 2, 3, 4, 5], value=5)
+if st.sidebar.button("حفظ التقييم"):
+    st.sidebar.success("شكراً لك!")
 
 st.sidebar.markdown("---")
-menu = st.sidebar.radio("انتقل إلى:", ["🎯 تحدي المستويات", "📖 القاموس الذكي"])
 
-# 3. محتوى التطبيق
+# --- قسم المشاركة لكل التطبيقات ---
+st.sidebar.subheader("📢 انشر في كل مكان")
+
+# ملاحظة: ضع رابطك الحقيقي هنا
+my_app_url = "https://your-app-link.streamlit.app" 
+share_text = f"جرب تطبيق 'أكاديمية الـ 1000 كلمة' لتعلم الإنجليزية مجاناً وتحدي نفسك! 🚀\n{my_app_url}"
+encoded_text = urllib.parse.quote(share_text)
+
+# روابط المشاركة
+col1, col2 = st.sidebar.columns(2)
+with col1:
+    st.markdown(f"[![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=flat&logo=whatsapp&logoColor=white)](https://wa.me/?text={encoded_text})")
+    st.markdown(f"[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=flat&logo=telegram&logoColor=white)](https://t.me/share/url?url={my_app_url}&text={encoded_text})")
+with col2:
+    st.markdown(f"[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=flat&logo=facebook&logoColor=white)](https://www.facebook.com/sharer/sharer.php?u={my_app_url})")
+    st.markdown(f"[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white)](https://twitter.com/intent/tweet?text={encoded_text})")
+
+st.sidebar.markdown("---")
+menu = st.sidebar.radio("القائمة:", ["🎯 التحدي الذكي", "📖 القاموس الشامل"])
+
+# --- محتوى التطبيق ---
 if df is not None:
-    if menu == "🎯 تحدي المستويات":
+    if menu == "🎯 التحدي الذكي":
         st.title("🎯 تحدي الـ 1000 كلمة")
-        st.write("اختر مستواك وابدأ التحدي!")
+        lvl = st.selectbox("اختر المستوى:", ["سهل", "متوسط", "صعب"])
+        level_df = df[df['level'] == lvl]
         
-        level_choice = st.selectbox("اختر الصعوبة:", ["سهل", "متوسط", "صعب"])
-        filtered_words = df[df['level'] == level_choice]
+        if st.button("كلمة جديدة 🔄") or 'current_word' not in st.session_state:
+            if not level_df.empty:
+                st.session_state.current_word = random.choice(level_df['full_line'].values)
+                st.session_state.reveal = False
 
-        if st.button("توليد كلمة جديدة 🔄"):
-            st.session_state.current_item = random.choice(filtered_words['full_line'].values)
-            st.session_state.show_res = False
+        if 'current_word' in st.session_state:
+            word = st.session_state.current_word
+            clean_word = word.split('-')[0] if '-' in word else word
+            st.info(f"### خمن معنى: \n # {clean_word}")
+            if st.button("👀 إظهار الحل"): st.session_state.reveal = True
+            if st.session_state.get('reveal'): st.success(f"### {word}")
 
-        if 'current_item' in st.session_state:
-            item = st.session_state.current_item
-            # عرض الجزء الأول قبل النقطة أو الداش للتشويق
-            display_word = item.split('-')[0] if '-' in item else item.split('.')[0]
-            
-            st.markdown(f"""
-            <div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; text-align: center;">
-                <h1 style="color: #0e1117;">{display_word}</h1>
-            </div>
-            """, unsafe_allow_html=True)
-
-            if st.button("👁️ إظهار الحل"):
-                st.session_state.show_res = True
-            
-            if st.session_state.get('show_res'):
-                st.success(f"### النتيجة كاملة: \n {item}")
-
-    elif menu == "📖 القاموس الذكي":
-        st.title("📖 القاموس المصنف")
-        search = st.text_input("🔍 ابحث عن أي كلمة (عربي أو إنجليزي):")
-        
-        selected_levels = st.multiselect("تصفية حسب المستوى:", ["سهل", "متوسط", "صعب"], default=["سهل", "متوسط", "صعب"])
-        
-        display_df = df[df['level'].isin(selected_levels)]
-        
-        if search:
-            display_df = display_df[display_df['full_line'].str.contains(search, case=False)]
-        
-        st.dataframe(display_df[['level', 'full_line']], use_container_width=True, height=600)
-
+    elif menu == "📖 القاموس الشامل":
+        st.title("📖 قاموس الأكاديمية")
+        search = st.text_input("🔍 ابحث عن كلمة:")
+        filtered = df[df['full_line'].str.contains(search, case=False)] if search else df
+        st.dataframe(filtered[['level', 'full_line']], use_container_width=True)
 else:
-    st.error("❌ خطأ: لم نجد ملف vocab.csv في مستودع GitHub الخاص بك.")
-    
+    st.error("⚠️ ملف 'vocab.csv' غير موجود في GitHub بنفس الاسم.")
+        
