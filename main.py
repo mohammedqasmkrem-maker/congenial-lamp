@@ -2,94 +2,63 @@ import streamlit as st
 import pandas as pd
 import random
 import os
-import urllib.parse
-import time
 
-# إعداد الصفحة
-st.set_page_config(page_title="أكاديمية الـ 1000 كلمة", layout="wide")
+# 1. إعداد الصفحة (لتفتح بشكل كامل ومباشر)
+st.set_page_config(page_title="أكاديمية الـ 1000 كلمة", layout="wide", page_icon="🎮")
 
-# 1. تحميل البيانات
+# 2. دالة تحميل البيانات (تعمل في الخلفية فوراً)
 @st.cache_data
 def load_data():
     file_name = 'vocab.csv'
     if os.path.exists(file_name):
-        df = pd.read_csv(file_name, header=None, names=['full_line'], sep='|', engine='python')
-        df['level'] = 'سهل'
-        if len(df) > 300: df.loc[300:700, 'level'] = 'متوسط'
-        if len(df) > 700: df.loc[700:, 'level'] = 'صعب'
-        return df
+        try:
+            df = pd.read_csv(file_name, header=None, names=['full_line'], sep='|', engine='python')
+            df['level'] = 'سهل'
+            if len(df) > 300: df.loc[300:700, 'level'] = 'متوسط'
+            if len(df) > 700: df.loc[700:, 'level'] = 'صعب'
+            return df
+        except: return None
     return None
 
 df = load_data()
 
-# 2. إدارة الحالة (Session State)
-if 'score' not in st.session_state: st.session_state.score = 0
-if 'start_time' not in st.session_state: st.session_state.start_time = time.time()
-
-# 3. القائمة الجانبية (المشاركة والروابط المصلحة)
-st.sidebar.title("🚀 لوحة التحكم")
-st.sidebar.metric("نقاطك 🏆", st.session_state.score)
-
-# --- إصلاح روابط المشاركة ---
-# ملاحظة: ضع رابط تطبيقك الحقيقي هنا بدل الرابط أدناه
-my_actual_url = "https://your-app-link.streamlit.app" 
-share_msg = f"جمعت {st.session_state.score} نقطة في تحدي الكلمات! جرب مستواك: {my_actual_url}"
-encoded_msg = urllib.parse.quote(share_msg)
-
-st.sidebar.subheader("📢 انشر التحدي")
-# روابط مباشرة ومختصرة لضمان الفتح
-st.sidebar.markdown(f"**[✈️ انشر عبر تليجرام](https://t.me/share/url?url={my_actual_url}&text={encoded_msg})**")
-st.sidebar.markdown(f"**[🟢 انشر عبر واتساب](https://api.whatsapp.com/send?text={encoded_msg})**")
-
-menu = st.sidebar.radio("القائمة:", ["🎮 التحدي الزمني", "📖 القاموس"])
-
-# 4. محتوى التطبيق
+# 3. واجهة التطبيق المباشرة
 if df is not None:
-    if menu == "🎮 التحدي الزمني":
-        st.title("⏱️ تحدي الثواني العشر!")
-        lvl = st.selectbox("المستوى:", ["سهل", "متوسط", "صعب"])
+    # القائمة الجانبية للتنقل السريع
+    menu = st.sidebar.radio("اختر القسم:", ["📖 البحث الفوري", "🎯 ابدأ اللعبة الآن"])
+
+    if menu == "📖 البحث الفوري":
+        st.title("🔍 ابحث عن أي كلمة")
+        search = st.text_input("اكتب الكلمة هنا تظهر لك النتيجة فوراً:", placeholder="مثلاً: Apple")
+        
+        if search:
+            results = df[df['full_line'].str.contains(search, case=False)]
+            st.table(results[['level', 'full_line']])
+        else:
+            st.write("جميع الكلمات المتاحة:")
+            st.dataframe(df[['level', 'full_line']], use_container_width=True)
+
+    elif menu == "🎯 ابدأ اللعبة الآن":
+        st.title("🎯 تحدي الـ 1000 كلمة")
+        lvl = st.selectbox("اختر الصعوبة:", ["سهل", "متوسط", "صعب"])
         level_df = df[df['level'] == lvl]
 
-        if st.button("كلمة جديدة 🔄"):
-            st.session_state.current_item = random.choice(level_df['full_line'].values)
-            st.session_state.start_time = time.time() 
-            st.rerun()
+        if st.button("كلمة جديدة 🔄") or 'word' not in st.session_state:
+            st.session_state.word = random.choice(level_df['full_line'].values)
+            st.session_state.show = False
 
-        if 'current_item' in st.session_state:
-            # حساب الوقت المتبقي
-            elapsed = time.time() - st.session_state.start_time
-            remaining = max(0, 10 - int(elapsed))
-            
-            if remaining > 0:
-                st.write(f"⏳ الوقت المتبقي: **{remaining}** ثانية")
-                # شريط تقدم للوقت
-                st.progress(remaining / 10)
-            else:
-                st.error("⏰ انتهى الوقت! اضغط 'كلمة جديدة' للتعويض.")
+        full_word = st.session_state.word
+        eng = full_word.split('-')[0].strip() if '-' in full_word else full_word
+        arb = full_word.split('-')[1].strip() if '-' in full_word else "ترجم"
 
-            item = st.session_state.current_item
-            eng = item.split('-')[0].strip() if '-' in item else item
-            arb = item.split('-')[1].strip() if '-' in item else "غير مترجم"
-
-            st.info(f"### ما معنى الكلمة التالية بالعربي؟ \n # {eng}")
-            
-            user_ans = st.text_input("اكتب الجواب هنا:", key="ans_input").strip()
-
-            if st.button("تحقق ✅"):
-                if remaining == 0:
-                    st.warning("انتهى الوقت، لم تُحسب النقاط!")
-                elif user_ans == arb:
-                    st.success(f"صح! أحسنت 💪 (+20 نقطة)")
-                    st.session_state.score += 20
-                    st.balloons()
-                else:
-                    st.error(f"خطأ! الجواب هو: {arb}")
-
-    elif menu == "📖 القاموس":
-        st.title("📖 القاموس الذكي")
-        search = st.text_input("بحث:")
-        res = df[df['full_line'].str.contains(search, case=False)] if search else df
-        st.dataframe(res[['level', 'full_line']], use_container_width=True)
+        st.info(f"### كيف تترجم هذه الكلمة؟ \n # {eng}")
+        
+        if st.button("إظهار الحل 👀"):
+            st.session_state.show = True
+        
+        if st.session_state.show:
+            st.success(f"### المعنى هو: {arb}")
 
 else:
-    st.error("الملف غير موجود")
+    st.error("⚠️ ملف vocab.csv غير موجود بجانب الكود في GitHub.")
+            
