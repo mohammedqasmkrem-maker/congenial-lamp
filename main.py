@@ -23,61 +23,59 @@ def load_data():
 
 df = load_data()
 
-# --- القائمة الجانبية المحدثة ---
-st.sidebar.title("📊 مركز التحكم")
+# --- القائمة الجانبية (المشاركة والتقييم) ---
+st.sidebar.title("📊 الإحصائيات والمشاركة")
 
-# نظام التقييم
-st.sidebar.subheader("⭐ تقييمك يهمنا")
-rating = st.sidebar.select_slider("النجوم:", options=[1, 2, 3, 4, 5], value=5)
-if st.sidebar.button("حفظ التقييم"):
-    st.sidebar.success("شكراً لك!")
-
-st.sidebar.markdown("---")
-
-# --- قسم المشاركة لكل التطبيقات ---
-st.sidebar.subheader("📢 انشر في كل مكان")
-
-# ملاحظة: ضع رابطك الحقيقي هنا
+# رابط التطبيق (تأكد من وضع رابطك الحقيقي هنا)
 my_app_url = "https://your-app-link.streamlit.app" 
-share_text = f"جرب تطبيق 'أكاديمية الـ 1000 كلمة' لتعلم الإنجليزية مجاناً وتحدي نفسك! 🚀\n{my_app_url}"
+share_text = f"جرب تحدي الكتابة في تطبيق 'أكاديمية الـ 1000 كلمة'! 🚀\n{my_app_url}"
 encoded_text = urllib.parse.quote(share_text)
 
-# روابط المشاركة
-col1, col2 = st.sidebar.columns(2)
-with col1:
-    st.markdown(f"[![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=flat&logo=whatsapp&logoColor=white)](https://wa.me/?text={encoded_text})")
-    st.markdown(f"[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=flat&logo=telegram&logoColor=white)](https://t.me/share/url?url={my_app_url}&text={encoded_text})")
-with col2:
-    st.markdown(f"[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=flat&logo=facebook&logoColor=white)](https://www.facebook.com/sharer/sharer.php?u={my_app_url})")
-    st.markdown(f"[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white)](https://twitter.com/intent/tweet?text={encoded_text})")
+# أزرار المشاركة
+st.sidebar.markdown(f"[![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=flat&logo=whatsapp&logoColor=white)](https://wa.me/?text={encoded_text})")
+st.sidebar.markdown(f"[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=flat&logo=telegram&logoColor=white)](https://t.me/share/url?url={my_app_url}&text={encoded_text})")
 
 st.sidebar.markdown("---")
-menu = st.sidebar.radio("القائمة:", ["🎯 التحدي الذكي", "📖 القاموس الشامل"])
+menu = st.sidebar.radio("انتقل إلى:", ["🎯 تحدي الكتابة", "📖 القاموس الشامل"])
 
 # --- محتوى التطبيق ---
 if df is not None:
-    if menu == "🎯 التحدي الذكي":
-        st.title("🎯 تحدي الـ 1000 كلمة")
+    if menu == "🎯 تحدي الكتابة":
+        st.title("🎯 اختبر إملاءك وحفظك")
         lvl = st.selectbox("اختر المستوى:", ["سهل", "متوسط", "صعب"])
         level_df = df[df['level'] == lvl]
         
-        if st.button("كلمة جديدة 🔄") or 'current_word' not in st.session_state:
-            if not level_df.empty:
-                st.session_state.current_word = random.choice(level_df['full_line'].values)
-                st.session_state.reveal = False
+        if st.sidebar.button("🔄 كلمة جديدة"):
+            st.session_state.word_data = random.choice(level_df['full_line'].values)
+            st.session_state.answer_correct = None
+            st.rerun()
 
-        if 'current_word' in st.session_state:
-            word = st.session_state.current_word
-            clean_word = word.split('-')[0] if '-' in word else word
-            st.info(f"### خمن معنى: \n # {clean_word}")
-            if st.button("👀 إظهار الحل"): st.session_state.reveal = True
-            if st.session_state.get('reveal'): st.success(f"### {word}")
+        if 'word_data' not in st.session_state:
+            st.session_state.word_data = random.choice(level_df['full_line'].values)
+
+        # تحضير السؤال والجواب
+        # نفترض السطر بصيغة: Apple - تفاحة
+        full_word = st.session_state.word_data
+        english_part = full_word.split('-')[0].strip() if '-' in full_word else full_word
+        arabic_part = full_word.split('-')[1].strip() if '-' in full_word else "خمن الكلمة"
+
+        st.info(f"### ما معنى كلمة: **{arabic_part}** بالإنجليزية؟")
+        
+        user_answer = st.text_input("اكتب الكلمة هنا بالإنجليزية:", key="user_input").strip()
+
+        if st.button("تحقق من الإجابة ✅"):
+            if user_answer.lower() == english_part.lower():
+                st.success(f"ممتاز! إجابة صحيحة: **{english_part}** 🎉")
+            else:
+                st.error(f"للأسف خطأ! الإجابة الصحيحة هي: **{english_part}**")
+                st.info(f"أنت كتبت: {user_answer}")
 
     elif menu == "📖 القاموس الشامل":
-        st.title("📖 قاموس الأكاديمية")
-        search = st.text_input("🔍 ابحث عن كلمة:")
+        st.title("📖 قاموس الـ 1000 كلمة")
+        search = st.text_input("🔍 ابحث (عربي/إنجليزي):")
         filtered = df[df['full_line'].str.contains(search, case=False)] if search else df
         st.dataframe(filtered[['level', 'full_line']], use_container_width=True)
+
 else:
     st.error("⚠️ ملف 'vocab.csv' غير موجود في GitHub بنفس الاسم.")
-        
+    
