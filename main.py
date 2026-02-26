@@ -3,107 +3,102 @@ import pandas as pd
 import random
 import os
 import time
-import urllib.parse
 
-# 1. إعدادات الصفحة (تجعلها تعمل كـ تطبيق موبايل)
-st.set_page_config(page_title="أكاديمية الـ 1000 كلمة", layout="wide")
+# 1. إعدادات الصفحة
+st.set_page_config(page_title="أكاديمية المستويات", layout="wide")
 
-# 2. وظيفة تحميل الكلمات (ضمان العمل حتى بدون ملف خارجي)
+# 2. تحميل البيانات وتنظيمها في مستويات (100 كلمة لكل مستوى)
 @st.cache_data
-def load_data():
-    file_path = 'vocab.csv'
-    if os.path.exists(file_path):
-        try:
-            # محاولة قراءة ملفك
-            df = pd.read_csv(file_path, header=None, names=['full_line'], sep='|', engine='python')
-            return df
-        except:
-            pass
+def load_and_split_data():
+    if os.path.exists('vocab.csv'):
+        df = pd.read_csv('vocab.csv', header=None, names=['full_line'], sep='|', engine='python')
+    else:
+        # كلمات تجريبية في حال عدم وجود الملف
+        data = [f"Word {i} - كلمة {i}" for i in range(1, 301)]
+        df = pd.DataFrame({'full_line': data})
     
-    # إذا لم يجد الملف، يستخدم هذه الكلمات لكي "يشتغل" التطبيق ولا يبقى صورة
-    return pd.DataFrame({'full_line': [
-        'Apple - تفاحة', 'Smart - ذكي', 'Success - نجاح', 
-        'School - مدرسة', 'Book - كتاب', 'Water - ماء'
-    ]})
+    # تقسيم الكلمات إلى مجموعات (كل مجموعة 100)
+    levels = {}
+    for i in range(0, len(df), 100):
+        lvl_num = (i // 100) + 1
+        levels[lvl_num] = df['full_line'].iloc[i:i+100].values
+    return df, levels
 
-df = load_data()
+df_all, levels_dict = load_and_split_data()
 
-# إدارة النقاط والصفحات
+# 3. إدارة الحالة (Session State)
 if 'score' not in st.session_state: st.session_state.score = 0
 if 'prizes' not in st.session_state: st.session_state.prizes = []
+if 'current_level' not in st.session_state: st.session_state.current_level = 1
 
-# --- 3. القائمة الجانبية (Sidebar) للتنقل الفعلي ---
+# --- 4. القائمة الجانبية (Sidebar) ---
 with st.sidebar:
-    st.header("🎮 لوحة التحكم")
-    menu = st.radio("انتقل إلى الصفحات:", 
-                    ["🏠 الرئيسية", "🎯 التحدي (30 ثانية)", "📖 البحث في القاموس", "🏆 إنجازاتي"])
+    st.header("🏆 لوحة التحكم")
+    menu = st.radio("انتقل إلى:", ["🏠 الرئيسية", "🎮 اختبار المستويات", "📖 القاموس الكامل", "🏅 الجوائز"])
     
     st.write("---")
-    st.metric("نقاطك الحالية", st.session_state.score)
-    
-    # روابط المشاركة المباشرة
-    st.subheader("📢 انشر التطبيق")
-    app_url = "https://mohammedqasmkrem-maker.streamlit.app"
-    msg = urllib.parse.quote(f"تحدي الـ 1000 كلمة! جرب مستواك معي: {app_url}")
-    st.markdown(f"[🟢 واتساب](https://api.whatsapp.com/send?text={msg})")
-    st.markdown(f"[✈️ تليجرام](https://t.me/share/url?url={app_url}&text={msg})")
+    st.write(f"**المستوى الحالي:** {st.session_state.current_level}")
+    st.metric("مجموع النقاط 🏆", st.session_state.score)
 
-# --- 4. تشغيل الصفحات (المحتوى التفاعلي) ---
+# --- 5. محتوى الصفحات ---
 
 if menu == "🏠 الرئيسية":
-    st.markdown("<h1 style='text-align: center;'>👋 أهلاً بك في تطبيقك الشغال</h1>", unsafe_allow_html=True)
-    st.info("اختر 'التحدي' من القائمة الجانبية لتبدأ اللعب، أو 'القاموس' للبحث.")
-    st.success(f"لديك الآن {len(df)} كلمة جاهزة للاختبار!")
+    st.title("👋 مرحباً بك في نظام المستويات")
+    st.write(f"يحتوي التطبيق حالياً على **{len(levels_dict)} مستويات**. كل مستوى يضم 100 كلمة.")
+    st.info("انتقل إلى 'اختبار المستويات' لتبدأ التحدي وتحصل على الجوائز!")
 
-elif menu == "🎯 التحدي (30 ثانية)":
-    st.title("🎯 ابدأ الاختبار الآن")
+elif menu == "🎮 اختبار المستويات":
+    st.title(f"🎯 التحدي: المستوى {st.session_state.current_level}")
     
-    if st.button("كلمة جديدة 🔄") or 'word_to_guess' not in st.session_state:
-        st.session_state.word_to_guess = random.choice(df['full_line'].values)
+    # اختيار كلمة من المستوى الحالي فقط
+    current_lv_words = levels_dict.get(st.session_state.current_level, levels_dict[1])
+    
+    if st.button("🔄 كلمة جديدة") or 'game_word' not in st.session_state:
+        st.session_state.game_word = random.choice(current_lv_words)
         st.session_state.start_t = time.time()
-        st.session_state.checked = False
         st.rerun()
 
-    # المؤقت الحقيقي
     rem = max(0, 30 - int(time.time() - st.session_state.start_t))
     st.progress(rem / 30)
-    st.write(f"⏳ الوقت المتبقي: {rem} ثانية")
-
-    if rem == 0:
-        st.error("⏰ انتهى الوقت! اضغط 'كلمة جديدة'")
-    else:
-        line = st.session_state.word_to_guess
-        eng = line.split('-')[0].strip()
-        arb = line.split('-')[1].strip() if '-' in line else "غير مترجم"
-        
-        st.subheader(f"ما معنى الكلمة: {eng}؟")
-        ans = st.text_input("اكتب الحل بالعربي:").strip()
-        
-        if st.button("تحقق ✅"):
-            if ans == arb:
-                st.success("إجابة صحيحة! +20 نقطة")
-                st.session_state.score += 20
-                if st.session_state.score % 100 == 0:
-                    st.session_state.prizes.append(f"وسام الـ {st.session_state.score} 🎖️")
+    
+    word_line = st.session_state.game_word
+    eng, arb = word_line.split('-')[0].strip(), word_line.split('-')[1].strip()
+    
+    st.subheader(f"ما معنى: **{eng}**؟")
+    ans = st.text_input("أدخل الإجابة بالعربي:", key="ans_input").strip()
+    
+    if st.button("تحقق ✅"):
+        if ans == arb:
+            st.success("إجابة صحيحة! +20 نقطة")
+            st.session_state.score += 20
+            
+            # نظام الجوائز والترقية للمستوى التالي
+            if st.session_state.score > 0 and st.session_state.score % 200 == 0: # مثال: كل 200 نقطة جائزة
+                prize_name = f"وسام إتمام المستوى {st.session_state.current_level} 🥇"
+                if prize_name not in st.session_state.prizes:
+                    st.session_state.prizes.append(prize_name)
                     st.balloons()
-            else:
-                st.error(f"خطأ! الجواب هو: {arb}")
+                    st.session_state.current_level += 1 # الترقية للمستوى التالي
+                    st.info(f"تهانينا! انتقلت إلى المستوى {st.session_state.current_level}")
+        else:
+            st.error(f"خطأ! الجواب هو: {arb}")
 
-elif menu == "📖 البحث في القاموس":
-    st.title("📖 القاموس التفاعلي")
-    query = st.text_input("🔍 ابحث عن كلمة:")
-    if query:
-        results = df[df['full_line'].str.contains(query, case=False)]
+elif menu == "📖 القاموس الكامل":
+    st.title("📖 القاموس الشامل")
+    search = st.text_input("🔍 ابحث عن كلمة معينة أو تصفح الكل:")
+    
+    if search:
+        results = df_all[df_all['full_line'].str.contains(search, case=False)]
         st.table(results)
     else:
-        st.write("اكتب شيئاً للبحث عنه...")
+        st.write("عرض كافة الكلمات في قاعدة البيانات:")
+        st.dataframe(df_all, use_container_width=True, height=400)
 
-elif menu == "🏆 إنجازاتي":
-    st.title("🏆 لوحة الشرف")
-    st.write(f"مجموع نقاطك: {st.session_state.score}")
-    if st.session_state.prizes:
-        for p in st.session_state.prizes:
-            st.success(p)
+elif menu == "🏅 الجوائز":
+    st.title("🏅 خزانة الجوائز")
+    if not st.session_state.prizes:
+        st.warning("لم تربح أي جوائز بعد. استمر في الاختبار لترقية مستواك!")
     else:
-        st.write("لم تحصل على جوائز بعد.")
-    
+        for p in st.session_state.prizes:
+            st.success(f"🎊 {p}")
+        
