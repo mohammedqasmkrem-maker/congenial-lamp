@@ -2,51 +2,68 @@ import streamlit as st
 import pandas as pd
 import random
 
-# إعداد الصفحة
-st.set_page_config(page_title="أكاديمية الـ 1000 كلمة", layout="centered")
+# إعدادات الواجهة
+st.set_page_config(page_title="أكاديمية الـ 1000 كلمة", layout="wide")
 
+# دالة تحميل البيانات بشكل صحيح
 @st.cache_data
 def load_data():
     try:
-        # قراءة ملفك الجاهز
-        df = pd.read_csv('vocab.csv', header=None, names=['text'])
+        # نقرأ السطر كاملاً مهما كان محتواه
+        df = pd.read_csv('vocab.csv', header=None, names=['full_text'])
         return df
     except:
         return None
 
 df = load_data()
 
-if df is not None:
-    st.sidebar.title("💎 الخيارات")
-    mode = st.sidebar.radio("اختر النمط:", ["🎯 اختبار ذكي", "📖 قاموس الكلمات"])
+# إضافة القائمة الجانبية (القاموس + الاختبار)
+st.sidebar.title("🚀 لوحة التحكم")
+page = st.sidebar.radio("انتقل إلى:", ["🎯 اختبار التحدي", "📖 القاموس الشامل"])
 
-    if mode == "🎯 اختبار ذكي":
+if df is not None:
+    if page == "🎯 اختبار التحدي":
         st.title("🎯 تحدي الـ 1000 كلمة")
         
-        if 'current_word' not in st.session_state:
-            st.session_state.current_word = random.choice(df['text'].values)
-            st.session_state.reveal = False
+        if 'current_item' not in st.session_state:
+            st.session_state.current_item = random.choice(df['full_text'].values)
+            st.session_state.revealed = False
 
-        # عرض رقم الكلمة للتشويق
-        word_data = st.session_state.current_word
-        st.subheader("هل تعرف معنى هذه الكلمة؟")
-        st.info(f"### {word_data.split('.')[0]}") # يعرض الرقم فقط
+        # صندوق عرض الكلمة
+        st.markdown(f"""
+        <div style="background-color: #1e2b3c; padding: 30px; border-radius: 15px; text-align: center; border: 2px solid #3e4b5c;">
+            <h2 style="color: white; margin-bottom: 10px;">ما معنى هذه الكلمة؟</h2>
+        </div>
+        """, unsafe_allow_html=True)
 
-        if st.button("إظهار الكلمة والترجمة 👀"):
-            st.session_state.reveal = True
+        # عرض الكلمة (نتجنب عرض الرقم فقط هنا)
+        raw_text = st.session_state.current_item
+        st.info(f"### {raw_text.split('.')[0]} ...") # عرض بداية السطر للتشويق
 
-        if st.session_state.reveal:
-            st.success(f"✅ {word_data}")
-            if st.button("الكلمة التالية ➡️"):
-                st.session_state.current_word = random.choice(df['text'].values)
-                st.session_state.reveal = False
+        if st.button("👀 إظهار الكلمة والترجمة"):
+            st.session_state.revealed = True
+        
+        if st.session_state.revealed:
+            st.success(f"### ✨ {st.session_state.current_item}")
+            if st.button("➡️ الكلمة التالية"):
+                st.session_state.current_item = random.choice(df['full_text'].values)
+                st.session_state.revealed = False
                 st.rerun()
-    else:
-        st.title("📖 القاموس الشامل")
-        search = st.text_input("🔍 ابحث عن كلمة أو رقم:")
-        filtered_df = df[df['text'].str.contains(search, case=False)] if search else df
-        for line in filtered_df.head(100)['text']:
-            st.write(line)
+
+    elif page == "📖 القاموس الشامل":
+        st.title("📖 قاموس الأكاديمية")
+        search = st.text_input("🔍 ابحث عن كلمة (بالعربي أو الإنجليزي):")
+        
+        # تصفية الكلمات بناءً على البحث
+        if search:
+            results = df[df['full_text'].str.contains(search, case=False, na=False)]
+            st.write(f"نتائج البحث ({len(results)}):")
+            for item in results['full_text']:
+                st.write(f"🔹 {item}")
+        else:
+            st.write("استعرض قائمة الـ 1000 كلمة:")
+            st.dataframe(df, use_container_width=True, height=400)
+
 else:
-    st.error("تأكد من وجود ملف vocab.csv في GitHub")
-    
+    st.error("لم نجد ملف vocab.csv. تأكد من رفعه على GitHub.")
+            
