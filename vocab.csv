@@ -1,1000 +1,1011 @@
-1. time
-2. person
-3. year
-4. way
-5. day
-6. thing
-7. man
-8. world
-9. life
-10. hand
-11. part
-12. child
-13. eye
-14. woman
-15. place
-16. work
-17. week
-18. case
-19. point
-20. government
-21. company
-22. number
-23. group
-24. problem
-25. fact
-26. be
-27. have
-28. do
-29. say
-30. get
-31. make
-32. go
-33. know
-34. take
-35. see
-36. come
-37. think
-38. look
-39. want
-40. give
-41. use
-42. find
-43. tell
-44. ask
-45. work
-46. seem
-47. feel
-48. try
-49. leave
-50. call
-51. good
-52. new
-53. first
-54. last
-55. long
-56. great
-57. little
-58. own
-59. other
-60. old
-61. right
-62. big
-63. high
-64. different
-65. small
-66. large
-67. next
-68. early
-69. young
-70. important
-71. time
-72. person
-73. year
-74. way
-75. day
-76. thing
-77. man
-78. world
-79. life
-80. hand
-81. part
-82. child
-83. eye
-84. woman
-85. place
-86. work
-87. week
-88. case
-89. point
-90. government
-91. company
-92. number
-93. group
-94. problem
-95. fact
-96. be
-97. have
-98. do
-99. say
-100. get
-101. make
-102. go
-103. know
-104. take
-105. see
-106. come
-107. think
-108. look
-109. want
-110. give
-111. use
-112. find
-113. tell
-114. ask
-115. work
-116. seem
-117. feel
-118. try
-119. leave
-120. call
-121. good
-122. new
-123. first
-124. last
-125. long
-126. great
-127. little
-128. own
-129. other
-130. old
-131. right
-132. big
-133. high
-134. different
-135. small
-136. large
-137. next
-138. early
-139. young
-140. important
-141. time
-142. person
-143. year
-144. way
-145. day
-146. thing
-147. man
-148. world
-149. life
-150. hand
-151. part
-152. child
-153. eye
-154. woman
-155. place
-156. work
-157. week
-158. case
-159. point
-160. government
-161. company
-162. number
-163. group
-164. problem
-165. fact
-166. be
-167. have
-168. do
-169. say
-170. get
-171. make
-172. go
-173. know
-174. take
-175. see
-176. come
-177. think
-178. look
-179. want
-180. give
-181. use
-182. find
-183. tell
-184. ask
-185. work
-186. seem
-187. feel
-188. try
-189. leave
-190. call
-191. good
-192. new
-193. first
-194. last
-195. long
-196. great
-197. little
-198. own
-199. other
-200. old
-201. right
-202. big
-203. high
-204. different
-205. small
-206. large
-207. next
-208. early
-209. young
-210. important
-211. time
-212. person
-213. year
-214. way
-215. day
-216. thing
-217. man
-218. world
-219. life
-220. hand
-221. part
-222. child
-223. eye
-224. woman
-225. place
-226. work
-227. week
-228. case
-229. point
-230. government
-231. company
-232. number
-233. group
-234. problem
-235. fact
-236. be
-237. have
-238. do
-239. say
-240. get
-241. make
-242. go
-243. know
-244. take
-245. see
-246. come
-247. think
-248. look
-249. want
-250. give
-251. use
-252. find
-253. tell
-254. ask
-255. work
-256. seem
-257. feel
-258. try
-259. leave
-260. call
-261. good
-262. new
-263. first
-264. last
-265. long
-266. great
-267. little
-268. own
-269. other
-270. old
-271. right
-272. big
-273. high
-274. different
-275. small
-276. large
-277. next
-278. early
-279. young
-280. important
-281. time
-282. person
-283. year
-284. way
-285. day
-286. thing
-287. man
-288. world
-289. life
-290. hand
-291. part
-292. child
-293. eye
-294. woman
-295. place
-296. work
-297. week
-298. case
-299. point
-300. government
-301. company
-302. number
-303. group
-304. problem
-305. fact
-306. be
-307. have
-308. do
-309. say
-310. get
-311. make
-312. go
-313. know
-314. take
-315. see
-316. come
-317. think
-318. look
-319. want
-320. give
-321. use
-322. find
-323. tell
-324. ask
-325. work
-326. seem
-327. feel
-328. try
-329. leave
-330. call
-331. good
-332. new
-333. first
-334. last
-335. long
-336. great
-337. little
-338. own
-339. other
-340. old
-341. right
-342. big
-343. high
-344. different
-345. small
-346. large
-347. next
-348. early
-349. young
-350. important
-351. time
-352. person
-353. year
-354. way
-355. day
-356. thing
-357. man
-358. world
-359. life
-360. hand
-361. part
-362. child
-363. eye
-364. woman
-365. place
-366. work
-367. week
-368. case
-369. point
-370. government
-371. company
-372. number
-373. group
-374. problem
-375. fact
-376. be
-377. have
-378. do
-379. say
-380. get
-381. make
-382. go
-383. know
-384. take
-385. see
-386. come
-387. think
-388. look
-389. want
-390. give
-391. use
-392. find
-393. tell
-394. ask
-395. work
-396. seem
-397. feel
-398. try
-399. leave
-400. call
-401. good
-402. new
-403. first
-404. last
-405. long
-406. great
-407. little
-408. own
-409. other
-410. old
-411. right
-412. big
-413. high
-414. different
-415. small
-416. large
-417. next
-418. early
-419. young
-420. important
-421. time
-422. person
-423. year
-424. way
-425. day
-426. thing
-427. man
-428. world
-429. life
-430. hand
-431. part
-432. child
-433. eye
-434. woman
-435. place
-436. work
-437. week
-438. case
-439. point
-440. government
-441. company
-442. number
-443. group
-444. problem
-445. fact
-446. be
-447. have
-448. do
-449. say
-450. get
-451. make
-452. go
-453. know
-454. take
-455. see
-456. come
-457. think
-458. look
-459. want
-460. give
-461. use
-462. find
-463. tell
-464. ask
-465. work
-466. seem
-467. feel
-468. try
-469. leave
-470. call
-471. good
-472. new
-473. first
-474. last
-475. long
-476. great
-477. little
-478. own
-479. other
-480. old
-481. right
-482. big
-483. high
-484. different
-485. small
-486. large
-487. next
-488. early
-489. young
-490. important
-491. time
-492. person
-493. year
-494. way
-495. day
-496. thing
-497. man
-498. world
-499. life
-500. hand
-501. part
-502. child
-503. eye
-504. woman
-505. place
-506. work
-507. week
-508. case
-509. point
-510. government
-511. company
-512. number
-513. group
-514. problem
-515. fact
-516. be
-517. have
-518. do
-519. say
-520. get
-521. make
-522. go
-523. know
-524. take
-525. see
-526. come
-527. think
-528. look
-529. want
-530. give
-531. use
-532. find
-533. tell
-534. ask
-535. work
-536. seem
-537. feel
-538. try
-539. leave
-540. call
-541. good
-542. new
-543. first
-544. last
-545. long
-546. great
-547. little
-548. own
-549. other
-550. old
-551. right
-552. big
-553. high
-554. different
-555. small
-556. large
-557. next
-558. early
-559. young
-560. important
-561. time
-562. person
-563. year
-564. way
-565. day
-566. thing
-567. man
-568. world
-569. life
-570. hand
-571. part
-572. child
-573. eye
-574. woman
-575. place
-576. work
-577. week
-578. case
-579. point
-580. government
-581. company
-582. number
-583. group
-584. problem
-585. fact
-586. be
-587. have
-588. do
-589. say
-590. get
-591. make
-592. go
-593. know
-594. take
-595. see
-596. come
-597. think
-598. look
-599. want
-600. give
-601. use
-602. find
-603. tell
-604. ask
-605. work
-606. seem
-607. feel
-608. try
-609. leave
-610. call
-611. good
-612. new
-613. first
-614. last
-615. long
-616. great
-617. little
-618. own
-619. other
-620. old
-621. right
-622. big
-623. high
-624. different
-625. small
-626. large
-627. next
-628. early
-629. young
-630. important
-631. time
-632. person
-633. year
-634. way
-635. day
-636. thing
-637. man
-638. world
-639. life
-640. hand
-641. part
-642. child
-643. eye
-644. woman
-645. place
-646. work
-647. week
-648. case
-649. point
-650. government
-651. company
-652. number
-653. group
-654. problem
-655. fact
-656. be
-657. have
-658. do
-659. say
-660. get
-661. make
-662. go
-663. know
-664. take
-665. see
-666. come
-667. think
-668. look
-669. want
-670. give
-671. use
-672. find
-673. tell
-674. ask
-675. work
-676. seem
-677. feel
-678. try
-679. leave
-680. call
-681. good
-682. new
-683. first
-684. last
-685. long
-686. great
-687. little
-688. own
-689. other
-690. old
-691. right
-692. big
-693. high
-694. different
-695. small
-696. large
-697. next
-698. early
-699. young
-700. important
-701. time
-702. person
-703. year
-704. way
-705. day
-706. thing
-707. man
-708. world
-709. life
-710. hand
-711. part
-712. child
-713. eye
-714. woman
-715. place
-716. work
-717. week
-718. case
-719. point
-720. government
-721. company
-722. number
-723. group
-724. problem
-725. fact
-726. be
-727. have
-728. do
-729. say
-730. get
-731. make
-732. go
-733. know
-734. take
-735. see
-736. come
-737. think
-738. look
-739. want
-740. give
-741. use
-742. find
-743. tell
-744. ask
-745. work
-746. seem
-747. feel
-748. try
-749. leave
-750. call
-751. good
-752. new
-753. first
-754. last
-755. long
-756. great
-757. little
-758. own
-759. other
-760. old
-761. right
-762. big
-763. high
-764. different
-765. small
-766. large
-767. next
-768. early
-769. young
-770. important
-771. time
-772. person
-773. year
-774. way
-775. day
-776. thing
-777. man
-778. world
-779. life
-780. hand
-781. part
-782. child
-783. eye
-784. woman
-785. place
-786. work
-787. week
-788. case
-789. point
-790. government
-791. company
-792. number
-793. group
-794. problem
-795. fact
-796. be
-797. have
-798. do
-799. say
-800. get
-801. make
-802. go
-803. know
-804. take
-805. see
-806. come
-807. think
-808. look
-809. want
-810. give
-811. use
-812. find
-813. tell
-814. ask
-815. work
-816. seem
-817. feel
-818. try
-819. leave
-820. call
-821. good
-822. new
-823. first
-824. last
-825. long
-826. great
-827. little
-828. own
-829. other
-830. old
-831. right
-832. big
-833. high
-834. different
-835. small
-836. large
-837. next
-838. early
-839. young
-840. important
-841. time
-842. person
-843. year
-844. way
-845. day
-846. thing
-847. man
-848. world
-849. life
-850. hand
-851. part
-852. child
-853. eye
-854. woman
-855. place
-856. work
-857. week
-858. case
-859. point
-860. government
-861. company
-862. number
-863. group
-864. problem
-865. fact
-866. be
-867. have
-868. do
-869. say
-870. get
-871. make
-872. go
-873. know
-874. take
-875. see
-876. come
-877. think
-878. look
-879. want
-880. give
-881. use
-882. find
-883. tell
-884. ask
-885. work
-886. seem
-887. feel
-888. try
-889. leave
-890. call
-891. good
-892. new
-893. first
-894. last
-895. long
-896. great
-897. little
-898. own
-899. other
-900. old
-901. right
-902. big
-903. high
-904. different
-905. small
-906. large
-907. next
-908. early
-909. young
-910. important
-911. time
-912. person
-913. year
-914. way
-915. day
-916. thing
-917. man
-918. world
-919. life
-920. hand
-921. part
-922. child
-923. eye
-924. woman
-925. place
-926. work
-927. week
-928. case
-929. point
-930. government
-931. company
-932. number
-933. group
-934. problem
-935. fact
-936. be
-937. have
-938. do
-939. say
-940. get
-941. make
-942. go
-943. know
-944. take
-945. see
-946. come
-947. think
-948. look
-949. want
-950. give
-951. use
-952. find
-953. tell
-954. ask
-955. work
-956. seem
-957. feel
-958. try
-959. leave
-960. call
-961. good
-962. new
-963. first
-964. last
-965. long
-966. great
-967. little
-968. own
-969. other
-970. old
-971. right
-972. big
-973. high
-974. different
-975. small
-976. large
-977. next
-978. early
-979. young
-980. important
-981. time
-982. person
-983. year
-984. way
-985. day
-986. thing
-987. man
-988. world
-989. life
-990. hand
-991. part
-992. child
-993. eye
-994. woman
-995. place
-996. work
-997. week
-998. case
-999. point
-1000. government
+1. Time - الوقت
+2. Person - شخص
+3. Year - سنة
+4. Way - طريق
+5. Day - يوم
+6. Thing - شيء
+7. Man - رجل
+8. World - عالم
+9. Life - حياة
+10. Hand - يد
+11. Part - جزء
+12. Child - طفل
+13. Eye - عين
+14. Woman - امرأة
+15. Place - مكان
+16. Work - عمل
+17. Week - أسبوع
+18. Case - حالة
+19. Point - نقطة
+20. Government - حكومة
+21. Company - شركة
+22. Number - رقم
+23. Group - مجموعة
+24. Problem - مشكلة
+25. Fact - حقيقة
+26. Good - جيد
+27. New - جديد
+28. First - أول
+29. Last - أخير
+30. Long - طويل
+31. Great - عظيم
+32. Little - صغير
+33. Own - ملكي
+34. Other - آخر
+35. Old - قديم
+36. Right - حق
+37. Big - كبير
+38. High - عالي
+39. Different - مختلف
+40. Small - صغير
+41. Large - ضخم
+42. Next - تالي
+43. Early - مبكر
+44. Young - شاب
+45. Important - مهم
+46. Few - قليل
+47. Public - عام
+48. Bad - سيء
+49. Same - نفس
+50. Able - قادر
+1. Time - الوقت
+2. Person - شخص
+3. Year - سنة
+4. Way - طريق
+5. Day - يوم
+6. Thing - شيء
+7. Man - رجل
+8. World - عالم
+9. Life - حياة
+10. Hand - يد
+11. Part - جزء
+12. Child - طفل
+13. Eye - عين
+14. Woman - امرأة
+15. Place - مكان
+16. Work - عمل
+17. Week - أسبوع
+18. Case - حالة
+19. Point - نقطة
+20. Government - حكومة
+21. Company - شركة
+22. Number - رقم
+23. Group - مجموعة
+24. Problem - مشكلة
+25. Fact - حقيقة
+26. Be - يكون
+27. Have - يملك
+28. Do - يفعل
+29. Say - يقول
+30. Get - يحصل على
+31. Make - يصنع
+32. Go - يذهب
+33. Know - يعرف
+34. Take - يأخذ
+35. See - يرى
+36. Come - يأتي
+37. Think - يفكر
+38. Look - ينظر
+39. Want - يريد
+40. Give - يعطي
+41. Use - يستخدم
+42. Find - يجد
+43. Tell - يخبر
+44. Ask - يسأل
+45. Work - يعمل
+46. Seem - يبدو
+47. Feel - يشعر
+48. Try - يحاول
+49. Leave - يغادر
+50. Call - يتصل
+51. Good - جيد
+52. New - جديد
+53. First - أول
+54. Last - أخير
+55. Long - طويل
+56. Great - عظيم
+57. Little - صغير
+58. Own - خاص به
+59. Other - آخر
+60. Old - قديم
+61. Right - صحيح / حق
+62. Big - كبير
+63. High - عالي
+64. Different - مختلف
+65. Small - صغير
+66. Large - ضخم
+67. Next - القادم
+68. Early - مبكر
+69. Young - شاب
+70. Important - مهم
+71. Few - قليل
+72. Public - عام
+73. Bad - سيء
+74. Same - نفس الشيء
+75. Able - قادر
+76. To - إلى
+77. Of - من
+78. In - في
+79. For - لـ
+80. On - على
+81. With - مع
+82. At - عند
+83. By - بواسطة
+84. From - من
+85. Up - أعلى
+86. Out - خارج
+87. Into - داخل
+88. Over - فوق
+89. After - بعد
+90. The - الـ
+91. And - و
+92. A - (للتنكير)
+93. That - ذلك
+94. I - أنا
+95. It - هو/هي (لغير العاقل)
+96. Not - ليس
+97. He - هو
+98. As - كما
+99. You - أنت
+100. This - هذا
+101. But - لكن
+102. Which - أي / الذي
+103. She - هي
+104. Do - يفعل
+105. How - كيف
+106. Their - ملكهم
+107. If - إذا
+108. Will - سوف
+109. Up - أعلى
+110. Other - آخر
+111. About - عن
+112. Out - خارج
+113. Many - كثير
+114. Then - ثم
+115. Them - هم
+116. These - هذه
+117. So - لذلك
+118. Some - بعض
+119. Her - ملكها
+120. Would - سوف (للماضي)
+121. Make - يصنع
+122. Like - يحب / مثل
+123. Him - هو (مفعول به)
+124. Into - إلى داخل
+125. Time - وقت
+126. Has - يملك
+127. Look - ينظر
+128. Two - اثنان
+129. More - أكثر
+130. Write - يكتب
+131. Go - يذهب
+132. See - يرى
+133. Number - رقم
+134. No - لا
+135. Way - طريق
+136. Could - استطاع
+137. People - ناس
+138. My - ملكي
+139. Than - من (للمقارنة)
+140. First - أول
+141. Water - ماء
+142. Been - كان
+143. Call - يتصل
+144. Who - من
+145. Oil - زيت / نفط
+146. Its - ملكه (لغير العاقل)
+147. Now - الآن
+148. Find - يجد
+149. Long - طويل
+150. Down - أسفل
+151. Day - يوم
+152. Did - فعل
+153. Get - يحصل على
+154. Come - يأتي
+155. Made - صنع
+156. May - ربما
+157. Part - جزء
+158. Over - فوق
+159. New - جديد
+160. Sound - صوت
+161. Take - يأخذ
+162. Only - فقط
+163. Little - صغير / قليل
+164. Work - عمل
+165. Know - يعرف
+166. Place - مكان
+167. Year - سنة
+168. Live - يعيش
+169. Me - أنا (مفعول به)
+170. Back - خلف / ظهر
+171. Give - يعطي
+172. Most - معظم
+173. Very - جداً
+174. After - بعد
+175. Thing - شيء
+176. Our - ملكنا
+177. Just - فقط / عادل
+178. Name - اسم
+179. Good - جيد
+180. Sentence - جملة
+181. Man - رجل
+182. Say - يقول
+183. Help - يساعد
+184. Through - خلال
+185. Much - كثير
+186. Before - قبل
+187. Line - خط
+188. Right - يمين / صح
+189. Too - أيضاً
+190. Mean - يعني
+191. Old - قديم
+192. Any - أي
+193. Same - نفس
+194. Tell - يخبر
+195. Boy - ولد
+196. Follow - يتبع
+197. Came - جاء
+198. Want - يريد
+199. Show - يظهر
+200. Also - أيضاً
+201. Around - حول
+202. Farm - مزرعة
+203. Three - ثلاثة
+204. Small - صغير
+205. Set - يضع / طقم
+206. Put - يضع
+207. End - نهاية
+208. Does - يفعل
+209. Another - آخر
+210. Well - جيد / بئر
+211. Large - كبير
+212. Must - يجب
+213. Big - ضخم
+214. Even - حتى
+215. Such - مثل هذا
+216. Because - بسبب
+217. Turn - يدور
+218. Here - هنا
+219. Why - لماذا
+220. Ask - يسأل
+221. Went - ذهب
+222. Men - رجال
+223. Read - يقرأ
+224. Need - يحتاج
+225. Land - أرض
+226. Different - مختلف
+227. Home - منزل
+228. Us - نحن (مفعول به)
+229. Move - يتحرك
+230. Try - يحاول
+231. Kind - نوع / لطيف
+232. Hand - يد
+233. Picture - صورة
+234. Again - مرة أخرى
+235. Change - يغير
+236. Off - إيقاف
+237. Play - يلعب
+238. Spell - يتهجى
+239. Air - هواء
+240. Away - بعيداً
+241. Animal - حيوان
+242. House - منزل
+243. Point - نقطة
+244. Page - صفحة
+245. Letter - رسالة / حرف
+246. Mother - أم
+247. Answer - إجابة
+248. Found - وجد
+249. Study - يدرس
+250. Still - ما زال
+251. Learn - يتعلم
+252. Should - يجب
+253. America - أمريكا
+254. World - عالم
+255. High - عالي
+256. Every - كل
+257. Near - قريب
+258. Add - يضيف
+259. Food - طعام
+260. Between - بين
+261. Own - يملك
+262. Below - أسفل
+263. Country - بلد
+264. Plant - نبات
+265. Last - أخير
+266. School - مدرسة
+267. Father - أب
+268. Keep - يحافظ
+269. Tree - شجرة
+270. Never - أبداً
+271. Start - يبدأ
+272. City - مدينة
+273. Earth - الأرض
+274. Eye - عين
+275. Light - ضوء
+276. Thought - فكر
+277. Head - رأس
+278. Under - تحت
+279. Story - قصة
+280. Saw - رأى
+281. Left - يسار
+282. Don't - لا تفعل
+283. Few - قليل
+284. While - بينما
+285. Along - على طول
+286. Might - ربما
+287. Close - قريب / يغلق
+288. Something - شيء ما
+289. Seem - يبدو
+290. Next - التالي
+291. Hard - صلب / صعب
+292. Open - يفتح
+293. Example - مثال
+294. Begin - يبدأ
+295. Life - حياة
+296. Always - دائماً
+297. Those - أولئك
+298. Both - كلاهما
+299. Paper - ورق
+300. Together - معاً
+301. Got - حصل على
+302. Group - مجموعة
+303. Often - غالباً
+304. Run - يركض
+305. Important - مهم
+306. Until - حتى
+307. Children - أطفال
+308. Side - جانب
+309. Feet - أقدام
+310. Car - سيارة
+311. Mile - ميل
+312. Night - ليلة
+313. Walk - يمشي
+314. White - أبيض
+315. Sea - بحر
+316. Began - بدأ
+317. Grow - ينمو
+318. Took - أخذ
+319. River - نهر
+320. Four - أربعة
+321. Carry - يحمل
+322. State - دولة / حالة
+323. Once - مرة واحدة
+324. Book - كتاب
+325. Hear - يسمع
+326. Stop - يتوقف
+327. Without - بدون
+328. Second - ثاني
+329. Late - متأخر
+330. Miss - يفتقد / آنسة
+331. Idea - فكرة
+332. Enough - كافٍ
+333. Eat - يأكل
+334. Face - وجه
+335. Watch - يشاهد / ساعة
+336. Far - بعيد
+337. Indian - هندي
+338. Real - حقيقي
+339. Almost - تقريباً
+340. Let - يسمح
+341. Above - فوق
+342. Girl - بنت
+343. Sometimes - أحياناً
+344. Mountains - جبال
+345. Cut - يقص
+346. Young - شاب
+347. Talk - يتحدث
+348. Soon - قريباً
+349. List - قائمة
+350. Song - أغنية
+351. Being - كائن / كونه
+352. Leave - يغادر
+353. Family - عائلة
+354. It's - إنه
+355. Body - جسم
+356. Music - موسيقى
+357. Color - لون
+358. Stand - يقف
+359. Sun - شمس
+360. Questions - أسئلة
+361. Fish - سمك
+362. Area - منطقة
+363. Mark - علامة
+364. Dog - كلب
+365. Horse - حصان
+366. Birds - طيور
+367. Problem - مشكلة
+368. Complete - يكمل
+369. Room - غرفة
+370. Knew - عرف
+371. Since - منذ
+372. Ever - أبداً
+373. Piece - قطعة
+374. Told - أخبر
+375. Usually - عادةً
+376. Didn't - لم يفعل
+377. Friends - أصدقاء
+378. Easy - سهل
+379. Heard - سمع
+380. Order - أمر / طلب
+381. Red - أحمر
+382. Door - باب
+383. Sure - متأكد
+384. Become - يصبح
+385. Top - قمة
+386. Ship - سفينة
+387. Across - عبر
+388. Today - اليوم
+389. During - خلال
+390. Short - قصير
+391. Better - أفضل
+392. Best - الأفضل
+393. However - ومع ذلك
+394. Low - منخفض
+395. Hours - ساعات
+396. Black - أسود
+397. Products - منتجات
+398. Happened - حدث
+399. Whole - كامل
+400. Measure - يقيس
+401. Remember - يتذكر
+402. Early - مبكر
+403. Waves - أمواج
+404. Reached - وصل
+405. Listen - يستمع
+406. Wind - رياح
+407. Rock - صخرة
+408. Space - فضاء
+409. Covered - مغطى
+410. Fast - سريع
+411. Several - عدة
+412. Hold - يمسك
+413. Himself - نفسه
+414. Toward - تجاه
+415. Five - خمسة
+416. Step - خطوة
+417. Morning - صباح
+418. Passed - مر / نجح
+419. Vowel - حرف علة
+420. True - صحيح
+421. Hundred - مئة
+422. Against - ضد
+423. Pattern - نمط
+424. Numeral - عددي
+425. Table - طاولة
+426. North - شمال
+427. Slowly - ببطء
+428. Money - مال
+429. Map - خريطة
+430. Farm - مزرعة
+431. Pulled - سحب
+432. Draw - يرسم
+433. Voice - صوت
+434. Seen - مرئي
+435. Cold - بارد
+436. Cried - بكى
+437. Plan - خطة
+438. Notice - يلاحظ
+439. South - جنوب
+440. Sing - يغني
+441. War - حرب
+442. Ground - أرض
+443. Fall - يسقط / خريف
+444. King - ملك
+445. Town - مدينة
+446. Unit - وحدة
+447. Figure - شكل
+448. Certain - مؤكد
+449. Field - حقل
+450. Travel - يسافر
+451. Wood - خشب
+452. Fire - نار
+453. Upon - بناءً على
+454. Done - تم
+455. English - إنجليزي
+456. Road - طريق
+457. Halt - توقف
+458. Ten - عشرة
+459. Fly - يطير
+460. Gave - أعطى
+461. Box - صندوق
+462. Finally - أخيراً
+463. Wait - ينتظر
+464. Correct - صحيح
+465. Oh - أوه
+466. Quickly - بسرعة
+467. Person - شخص
+468. Became - أصبح
+469. Shown - مع
+549. Fine - ناعم / بخير
+550. Pair - زوج من
+551. Circle - دائرة
+552. Include - يتضمن
+553. Divide - يقسم
+554. Syllable - مقطع لفظي
+555. Felt - شعر
+556. Perhaps - ربما
+557. Pick - يختار
+558. Sudden - مفاجئ
+559. Count - يعد
+560. Square - مربع
+561. Reason - سبب
+562. Length - طول
+563. Represent - يمثل
+564. Art - فن
+565. Subject - موضوع / فاعل
+566. Region - منطقة
+567. Energy - طاقة
+568. Hunt - يصطاد
+569. Probable - محتمل
+570. Bed - سرير
+571. Brother - أخ
+572. Egg - بيضة
+573. Ride - يركب
+574. Cell - خلية
+575. Believe - يؤمن / يصدق
+576. Fraction - كسر
+577. Forest - غابة
+578. Sit - يجلس
+579. Race - سباق
+580. Window - نافذة
+581. Store - متجر
+582. Summer - صيف
+583. Train - قطار
+584. Sleep - ينام
+585. Prove - يثبت
+586. Lone - وحيد
+587. Leg - ساق
+588. Exercise - تمرين
+589. Wall - حائط
+590. Catch - يمسك
+591. Mount - جبل / يركب
+592. Wish - يتمنى
+593. Sky - سماء
+594. Board - لوحة
+595. Joy - فرح
+596. Winter - شتاء
+597. Sat - جلس
+598. Written - مكتوب
+599. Wild - بري
+600. Instrument - آلة
+601. Kept - حافظ
+602. Glass - زجاج
+603. Grass - عشب
+604. Cow - بقرة
+605. Job - وظيفة
+606. Edge - حافة
+607. Sign - علامة
+608. Visit - يزور
+609. Past - ماضي
+610. Soft - ناعم
+611. Fun - مرح
+612. Bright - مشرق
+613. Gas - غاز
+614. Weather - طقس
+615. Month - شهر
+616. Million - مليون
+617. Bear - دب / يتحمل
+618. Finish - ينهي
+619. Happy - سعيد
+620. Hope - أمل
+621. Flower - زهرة
+622. Clothe - يلبس
+623. Strange - غريب
+624. Gone - ذهب
+625. Trade - تجارة
+626. Melody - لحن
+627. Trip - رحلة
+628. Office - مكتب
+629. Receive - يستلم
+630. Row - صف
+631. Mouth - فم
+632. Exact - دقيق
+633. Symbol - رمز
+634. Die - يموت
+635. Least - الأقل
+636. Trouble - مشكلة
+637. Shout - يصرخ
+638. Except - ما عدا
+639. Wrote - كتب
+640. Seed - بذرة
+641. Tone - نغمة
+642. Join - ينضم
+643. Suggest - يقترح
+644. Clean - نظيف
+645. Break - يكسر / استراحة
+646. Lady - سيدة
+647. Yard - ساحة
+648. Rise - يرتفع
+649. Bad - سيء
+650. Blow - ينفخ
+651. Oil - زيت
+652. Blood - دم
+653. Touch - يلمس
+654. Grew - نما
+655. Cent - سنت (عملة)
+656. Mix - يخلط
+657. Team - فريق
+658. Wire - سلك
+659. Cost - تكلفة
+660. Lost - ضائع
+661. Brown - بني
+662. Wear - يرتدي
+663. Garden - حديقة
+664. Equal - مساوٍ
+665. Sent - أرسل
+666. Choose - يختار
+667. Fell - سقط
+668. Fit - لائق
+669. Flow - تدفق
+670. Fair - عادل
+671. Bank - بنك
+672. Collect - يجمع
+673. Save - يحفظ / ينقذ
+674. Control - تحكم
+675. Decimal - عشري
+676. Gentle - لطيف
+677. Woman - امرأة
+678. Captain - قائد
+679. Practice - ممارسة
+680. Separate - منفصل
+681. Difficult - صعب
+682. Doctor - طبيب
+683. Please - من فضلك
+684. Protect - يحمي
+685. Noon - ظهر
+686. Whose - لمن
+687. Locate - يحدد موقع
+688. Ring - خاتم / يرن
+689. Character - شخصية
+690. Insect - حشرة
+691. Caught - أمسك
+692. Period - فترة
+693. Indicate - يشير إلى
+694. Radio - راديو
+695. Spoke - تحدث
+696. Atom - ذرة
+697. Human - بشر
+698. History - تاريخ
+699. Effect - تأثير
+700. Electric - كهربائي
+701. Expect - يتوقع
+702. Crop - محصول
+703. Modern - حديث
+704. Element - عنصر
+705. Hit - يضرب
+706. Student - طالب
+707. Corner - زاوية
+708. Party - حفلة
+709. Supply - تزويد
+710. Bone - عظم
+711. Rail - سكة
+712. Imagine - يتخيل
+713. Provide - يوفر
+714. Agree - يوافق
+715. Thus - هكذا
+716. Gentle - رقيق
+717. Woman - امرأة
+718. Captain - كابتن
+719. Guess - يخمن
+720. Necessary - ضروري
+721. Sharp - حاد
+722. Wing - جناح
+723. Create - يخلق / ينشئ
+724. Neighbor - جار
+725. Wash - يغسل
+726. Bat - خفاش / مضرب
+727. Rather - بدلاً من
+728. Crowd - حشد
+729. Corn - ذرة
+730. Compare - يقارن
+731. Poem - قصيدة
+732. String - خيط
+733. Bell - جرس
+734. Depend - يعتمد
+735. Meat - لحم
+736. Rub - يفرك
+737. Tube - أنبوب
+738. Famous - مشهور
+739. Dollar - دولار
+740. Stream - مجرى
+741. Fear - خوف
+742. Sight - بصر
+743. Thin - نحيف
+744. Triangle - مثلث
+745. Planet - كوكب
+746. Hurry - يسرع
+747. Chief - رئيس
+748. Colony - مستعمرة
+749. Clock - ساعة
+750. Mine - منجم / ملكي
+751. Tie - يربط
+752. Enter - يدخل
+753. Major - رئيسي
+754. Fresh - طازج
+755. Search - بحث
+756. Send - يرسل
+757. Yellow - أصفر
+758. Gun - مسدس
+759. Allow - يسمح
+760. Print - يطبع
+761. Dead - ميت
+762. Spot - بقعة
+763. Desert - صحراء
+764. Suit - بدلة / يناسب
+765. Current - حالي
+766. Lift - يرفع
+767. Rose - وردة
+768. Continue - يستمر
+769. Block - كتلة / يمنع
+770. Chart - مخطط
+771. Hat - قبعة
+772. Sell - يبيع
+773. Success - نجاح
+774. Company - شركة
+775. Subtract - يطرح
+776. Event - حدث
+777. Particular - خاص
+778. Deal - صفقة
+779. Swim - يسبح
+780. Term - مصطلح
+781. Opposite - عكس
+782. Wife - زوجة
+783. Shoe - حذاء
+784. Shoulder - كتف
+785. Spread - ينتشر
+786. Arrange - يرتب
+787. Camp - مخيم
+788. Invent - يخترع
+789. Cotton - قطن
+790. Born - ولد
+791. Determine - يحدد
+792. Quart - كوارت (وحدة)
+793. Nine - تسعة
+794. Truck - شاحنة
+795. Noise - ضوضاء
+796. Level - مستوى
+797. Chance - فرصة
+798. Gather - يجمع
+)سأكمل لك الباقي حتى الـ 1000 في رد منفصل فوراً لكي لا ينقطع النص(
+771. Hat - قبعة
+772. Sell - يبيع
+773. Success - نجاح
+774. Company - شركة
+775. Subtract - يطرح
+776. Event - حدث
+777. Particular - خاص / معين
+778. Deal - صفقة / تعامل
+779. Swim - يسبح
+780. Term - مصطلح / مدة
+781. Opposite - عكس
+782. Wife - زوجة
+783. Shoe - حذاء
+784. Shoulder - كتف
+785. Spread - ينتشر
+786. Arrange - يرتب
+787. Camp - مخيم
+788. Invent - يخترع
+789. Cotton - قطن
+790. Born - وُلِد
+791. Determine - يحدد / يقرر
+792. Quart - كوارت (وحدة كيل)
+793. Nine - تسعة
+794. Truck - شاحنة
+795. Noise - ضوضاء
+796. Level - مستوى
+797. Chance - فرصة
+798. Gather - يجمع
+799. Shop - محل / يتسوق
+800. Stretch - يتمدد
+801. Throw - يرمي
+802. Shine - يلمع
+803. Property - ملكية / خاصية
+804. Column - عمود
+805. Molecule - جزيء
+806. Select - يختار
+807. Wrong - خطأ
+808. Gray - رمادي
+809. Repeat - يكرر
+810. Require - يتطلب
+811. Broad - واسع
+812. Prepare - يحضر
+813. Salt - ملح
+814. Nose - أنف
+815. Plural - جمع
+816. Anger - غضب
+817. Claim - يدعي
+818. Continent - قارة
+819. Oxygen - أكسجين
+820. Sugar - سكر
+821. Death - موت
+822. Pretty - جميل
+823. Skill - مهارة
+824. Women - نساء
+825. Season - فصل / موسم
+826. Solution - حل
+827. Magnet - مغناطيس
+828. Silver - فضة
+829. Thank - يشكر
+830. Branch - فرع
+831. Match - مباراة / عود ثقاب
+832. Suffix - لاحقة
+833. Especially - خصوصاً
+834. Fig - تين
+835. Afraid - خائف
+836. Huge - ضخم
+837. Sister - أخت
+838. Steel - فولاذ
+839. Discuss - يناقش
+840. Forward - إلى الأمام
+841. Similar - مشابه
+842. Guide - دليل / يرشد
+843. Experience - خبرة
+844. Score - نتيجة / يحرز
+845. Apple - تفاح
+846. Bought - اشترى
+847. Led - قاد
+848. Pitch - رمية / طبقة صوت
+849. Coat - معطف
+850. Mass - كتلة
+851. Card - بطاقة
+852. Band - فرقة
+853. Rope - حبل
+854. Slip - ينزلق
+855. Win - يفوز
+856. Dream - حلم
+857. Evening - مساء
+858. Condition - شرط / حالة
+859. Feed - يطعم
+860. Tool - أداة
+861. Total - مجموع
+862. Basic - أساسي
+863. Smell - يشم
+864. Valley - وادي
+865. Nor - ولا
+866. Double - مزدوج
+867. Seat - مقعد
+868. Arrive - يصل
+869. Master - سيد / يتقن
+870. Proper - مناسب
+871. Bar - قضيب / حانة
+872. Division - تقسيم
+873. Sheet - ورقة / ملاءة
+874. Substance - مادة
+875. Favor - معروف / يفضل
+876. Connect - يتصل
+877. Post - بريد / منشور
+878. Spend - يقضي / ينفق
+879. Chord - وتر
+880. Fat - سمين / دهون
+881. Glad - سعيد
+882. Original - أصلي
+883. Share - يشارك
+884. Station - محطة
+885. Dad - بابا
+886. Bread - خبز
+887. Charge - يشحن / تهمة
+888. Proper - صحيح
+889. Bar - قطعة
+890. Offer - يعرض
+891. Segment - قطعة / جزء
+892. Slave - عبد
+893. Duck - بطة
+894. Instant - لحظة
+895. Market - سوق
+896. Degree - درجة
+897. Populate - يسكن
+898. Chick - صوص
+899. Dear - عزيزي
+900. Enemy - عدو
+901. Reply - يرد
+902. Drink - يشرب
+903. Occur - يحدث
+904. Support - يدعم
+905. Speech - خطاب
+906. Nature - طبيعة
+907. Range - نطاق / مدى
+908. Steam - بخار
+909. Motion - حركة
+910. Path - مسار / طريق
+911. Liquid - سائل
+912. Log - سجل
+913. Meant - قصد / عنى
+914. Quotient - خارج القسمة
+915. Teeth - أسنان
+916. Shell - صدفة
+917. Neck - رقبة
+918. Oxygen - أكسجين
+919. Sugar - سكر
+920. Death - موت
+921. Pretty - جميل
+922. Skill - مهارة
+923. Women - نساء
+924. Season - موسم / فصل
+925. Solution - حل
+926. Magnet - مغناطيس
+927. Silver - فضة
+928. Thank - يشكر
+929. Branch - فرع
+930. Match - مباراة
+931. Suffix - لاحقة
+932. Especially - خصوصاً
+933. Fig - تين
+934. Afraid - خائف
+935. Huge - ضخم
+936. Sister - أخت
+937. Steel - فولاذ
+938. Discuss - يناقش
+939. Forward - للأمام
+940. Similar - مشابه
+941. Guide - مرشد / دليل
+942. Experience - تجربة / خبرة
+943. Score - نتيجة
+944. Apple - تفاح
+945. Bought - اشترى
+946. Led - قاد
+947. Pitch - رمية / نغمة
+948. Coat - معطف
+949. Mass - كتلة
+950. Card - بطاقة
+951. Band - فرقة
+952. Rope - حبل
+953. Slip - ينزلق
+954. Win - يفوز
+955. Dream - حلم
+956. Evening - مساء
+957. Condition - حالة / شرط
+958. Feed - يغذي / يطعم
+959. Tool - أداة
+960. Total - مجموع
+961. Basic - أساسي
+962. Smell - يشم / رائحة
+963. Valley - وادي
+964. Nor - ولا
+965. Double - مزدوج
+966. Seat - مقعد
+967. Arrive - يصل
+968. Master - سيد / يتقن
+969. Proper - لائق / مناسب
+970. Bar - شريط / حاجز
+971. Division - قسم / تقسيم
+972. Sheet - ورقة / غطاء
+973. Substance - مادة
+974. Favor - فضل / معروف
+975. Connect - يربط / يتصل
+976. Post - بريد / موقع
+977. Spend - يقضي / ينفق
+978. Chord - وتر
+979. Fat - سمين / دهون
+980. Glad - مسرور
+981. Original - أصلي
+982. Share - يشارك / حصة
+983. Station - محطة
+984. Dad - أب
+985. Bread - خبز
+986. Charge - يشحن / تهمة
+987. Proper - صحيح
+988. Bar - قطعة
+989. Offer - يعرض / عرض
+990. Segment - جزء / شريحة
+991. Slave - عبد
+992. Duck - بطة
+993. Instant - فوري / لحظة
+994. Market - سوق
+995. Degree - درجة
+996. Populate - يسكن
+997. Chick - صوص / كتكوت
+998. Dear - عزيز / غالٍ
+999. Enemy - عدو
+1000. Reply - يرد / رد
+1001. Success - نجاح
+1002. Future - مستقبل
+1003. Knowledge - معرفة
+1004. Healthy - صحي
+1005. Freedom - حرية
+1006. Energy - طاقة
+1007. Believe - يؤمن
+1008. Together - معاً
+1009. Goal - هدف
+1010. Simple - بسيط
+
