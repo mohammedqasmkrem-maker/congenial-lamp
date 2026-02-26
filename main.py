@@ -1,39 +1,3 @@
-import streamlit as st
-import pandas as pd
-import random
-
-# إعدادات واجهة التطبيق
-st.set_page_config(page_title="تحدي الـ 1000 كلمة", layout="centered")
-
-# دالة تحميل ملف الكلمات
-@st.cache_data
-def load_data():
-    # هنا الكود يقرأ الملف بالاسم السهل اللي اختاريت
-return   pd.read_csv('vocab.csv', header=None, names=['word'])
-
-    df = load_data()
-    
-    st.title("🎓 تطبيق حفظ 1000 كلمة")
-    st.write("اختبر معلوماتك في اللغة الإنجليزية!")
-    st.divider()
-
-    # تهيئة العدادات في ذاكرة المتصفح
-    if 'score' not in st.session_state: st.session_state.score = 0
-    if 'count' not in st.session_state: st.session_state.count = 0
-
-    # اختيار كلمة عشوائية
-    if 'current_word' not in st.session_state:
-        st.session_state.current_word = df.sample(1).iloc[0]
-
-    word = st.session_state.current_word
-
-    # عرض السؤال
-    st.subheader(f"ما معنى كلمة: **{word['English Word']}**؟")
-
-    # تجهيز خيارات الإجابة
-    correct_ans = word['Arabic Translation']
-    wrong_answers = df[df['Arabic Translation'] != correct_ans]['Arabic Translation'].sample(3).tolist()
-    options = wrong_answers + [correct_ans]
     random.shuffle(options)
 
     # عرض أزرار الخيارات
