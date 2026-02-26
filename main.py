@@ -16,22 +16,22 @@ st.markdown("""
         background-color: #ffd700; color: #000; border-radius: 50px; 
         font-weight: bold; border: 3px solid #fff; height: 60px; font-size: 20px;
     }
-    .stMetric { background: rgba(255,255,255,0.1); padding: 10px; border-radius: 15px; }
+    .stMetric { background: rgba(255,255,255,0.1); padding: 10px; border-radius: 15px; border: 1px solid gold; }
     </style>
     """, unsafe_allow_html=True)
 
-# 2. وظيفة الصوت (الموسيقى + النطق) - تعمل بمجرد التفاعل
-def play_all(text=""):
+# 2. وظيفة الصوت الذكية (شلالات + نطق)
+def play_audio(text=""):
     components.html(f"""
         <script>
-            // موسيقى الشلالات
-            if (!window.bgMusic) {{
-                window.bgMusic = new Audio("https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-four/nature_waterfall_small_stream_close_up.mp3");
-                window.bgMusic.loop = true;
-                window.bgMusic.volume = 0.2;
-                window.bgMusic.play();
+            // موسيقى الشلالات الهادئة
+            if (!window.waterfall) {{
+                window.waterfall = new Audio("https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-four/nature_waterfall_small_stream_close_up.mp3");
+                window.waterfall.loop = true;
+                window.waterfall.volume = 0.2;
+                window.waterfall.play();
             }}
-            // نطق الكلمة
+            // نطق الكلمة الإنجليزية بصوت طبيعي
             if ("{text}" !== "") {{
                 var msg = new SpeechSynthesisUtterance("{text}");
                 msg.lang = "en-US";
@@ -46,7 +46,7 @@ def load_data():
     if os.path.exists('vocab.csv'):
         df = pd.read_csv('vocab.csv', header=None, names=['full_line'], sep='|', engine='python')
     else:
-        df = pd.DataFrame({'full_line': [f"Star {i} - نجمة {i}" for i in range(1, 1001)]})
+        df = pd.DataFrame({'full_line': ["Dream - حلم", "Success - نجاح", "World - عالم"]})
     lvls = { (i//100)+1 : df['full_line'].iloc[i:i+100].values for i in range(0, len(df), 100) }
     return df, lvls
 
@@ -55,70 +55,66 @@ df_all, levels = load_data()
 if 'score' not in st.session_state: st.session_state.score = 0
 if 'lvl' not in st.session_state: st.session_state.lvl = 1
 
-# 4. القائمة الجانبية
+# 4. القائمة الجانبية (بوابة النجوم)
 with st.sidebar:
-    st.markdown("## ⭐ لوحة الأبطال")
-    menu = st.radio("القائمة الرئيسية:", ["🏠 شاشة البدء", "🎯 تحدي النجوم", "📖 قاموس الصفحات"])
+    st.markdown("## ⭐ بوابة النجوم ⭐")
+    menu = st.radio("القائمة:", ["🏠 البيت الملكي", "🎯 تحدي النجوم", "📖 القاموس الناطق"])
     st.write("---")
-    st.metric("رصيدك من النجوم ⭐", st.session_state.score // 20)
+    st.metric("رصيد النجوم ⭐", st.session_state.score // 20)
     st.write(f"المستوى الحالي: {st.session_state.lvl}")
-    st.markdown("---")
-    # رابط النشر الحقيقي
-    st.markdown(f"**🔗 رابط المشاركة كبل:**")
+    st.write("---")
+    st.markdown(f"**🔗 رابط اللعبة العالمي:**")
     st.code("https://mohammedqasmkrem-maker.streamlit.app")
 
 # 5. محتوى الصفحات
-if menu == "🏠 شاشة البدء":
-    st.markdown("<h1>🌟 مرحباً بك في أكاديمية النجوم 🌟</h1>", unsafe_allow_html=True)
+if menu == "🏠 البيت الملكي":
+    st.markdown("<h1>🌟 مرحباً بك في منزلك التعليمي الفخم 🌟</h1>", unsafe_allow_html=True)
     st.write("##")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("### 🎯 هل أنت مستعد للاختبار؟")
-        if st.button("🚀 اذهب إلى التحدي الآن"):
-            st.info("اضغط على 'تحدي النجوم' من القائمة الجانبية")
-    with col2:
-        st.markdown("### 📖 تصفح الكلمات")
-        if st.button("📚 افتح القاموس المبوب"):
-            st.info("اضغط على 'قاموس الصفحات' من القائمة الجانبية")
-    st.write("---")
-    st.markdown("<p style='text-align:center;'>ملاحظة: إذا لم تسمع الصوت، اضغط على أي زر في الشاشة لتفعيل الموسيقى.</p>", unsafe_allow_html=True)
+    st.markdown("### 🔊 لتفعيل الأجواء (شلالات + قراءة)، اضغط الزر:")
+    if st.button("🌊 تشغيل الموسيقى والنجوم"):
+        play_audio("Welcome to your academy")
 
 elif menu == "🎯 تحدي النجوم":
-    st.markdown(f"<h1>⭐ تحدي المستوى {st.session_state.lvl} ⭐</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h2>⭐ تحدي المستوى {st.session_state.lvl} ⭐</h2>", unsafe_allow_html=True)
     words = levels.get(st.session_state.lvl, levels[1])
     
-    if 'current_word' not in st.session_state:
-        st.session_state.current_word = random.choice(words)
-        st.session_state.t_start = time.time()
-        play_all(st.session_state.current_word.split('-')[0].strip())
+    if 'game_word' not in st.session_state:
+        st.session_state.game_word = random.choice(words)
+        st.session_state.t0 = time.time()
+        play_audio(st.session_state.game_word.split('-')[0].strip())
 
-    dt = max(0, 30 - int(time.time() - st.session_state.t_start))
+    dt = max(0, 30 - int(time.time() - st.session_state.t0))
     st.progress(dt / 30)
     
-    eng, arb = st.session_state.current_word.split('-')[0].strip(), st.session_state.current_word.split('-')[1].strip()
+    eng, arb = st.session_state.game_word.split('-')[0].strip(), st.session_state.game_word.split('-')[1].strip()
     st.markdown(f"<div style='background:rgba(0,0,0,0.6); padding:40px; border-radius:25px; text-align:center; font-size:45px; border:3px solid gold;'>{eng}</div>", unsafe_allow_html=True)
     
-    ans = st.text_input("أدخل الترجمة العربية هنا 👇", key=f"ans_{st.session_state.score}").strip()
+    ans = st.text_input("اكتب الحل بالعربي هنا 👇", key=f"ans_{st.session_state.score}").strip()
     
     if ans:
         if ans == arb:
-            st.success("⭐ أحسنت! إجابة صحيحة")
+            st.success("⭐ أحسنت! كبل للكلمة التالية...")
             st.session_state.score += 20
-            st.session_state.current_word = random.choice(words)
-            st.session_state.t_start = time.time()
-            play_all(st.session_state.current_word.split('-')[0].strip()) # نطق الكلمة الجديدة
-            if st.session_state.score % 200 == 0: 
-                st.session_state.lvl += 1
-                st.balloons()
+            st.session_state.game_word = random.choice(words)
+            st.session_state.t0 = time.time()
+            play_audio(st.session_state.game_word.split('-')[0].strip())
+            if st.session_state.score % 200 == 0: st.session_state.lvl += 1; st.balloons()
             time.sleep(1)
             st.rerun()
         else:
-            st.error(f"❌ خطأ! الجواب الصحيح: {arb}")
+            st.error(f"❌ الجواب هو: {arb}")
 
-elif menu == "📖 قاموس الصفحات":
+elif menu == "📖 القاموس الناطق":
     st.markdown("<h1>📖 مكتبة الكلمات ⭐</h1>", unsafe_allow_html=True)
     p_size = 20
     total = max(1, len(df_all) // p_size)
-    p_num = st.selectbox("اختر رقم الصفحة لتصفح الكلمات:", range(1, total + 1))
-    st.table(df_all.iloc[(p_num-1)*p_size : p_num*p_size])
+    p_num = st.selectbox("اختر الصفحة:", range(1, total + 1))
+    
+    curr_page = df_all.iloc[(p_num-1)*p_size : p_num*p_size]
+    for i, row in curr_page.iterrows():
+        c1, c2 = st.columns([4, 1])
+        with c1: st.write(f"### {row['full_line']}")
+        with c2:
+            if st.button("🔊", key=f"spk_{i}"):
+                play_audio(row['full_line'].split('-')[0].strip())
     
