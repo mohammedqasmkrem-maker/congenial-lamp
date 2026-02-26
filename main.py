@@ -57,4 +57,4 @@ return pd.read_csv('vocab.csv', header=None, names=['word'])
 
 except Exception as e:
     st.warning("انتظر! تأكد من رفع ملف الكلمات باسم 'vocab.csv' في نفس الصفحة.")
-  
+
