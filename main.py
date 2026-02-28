@@ -1,177 +1,147 @@
 import streamlit as st
-import sqlite3
 import random
 import time
-from gtts import gTTS
-import uuid
-import os
+import sqlite3
 
-st.set_page_config(page_title="Vocabulary Quiz Pro", page_icon="🏆")
+# --- 1. إعدادات قاعدة البيانات (SQLite) لتخزين السكور والأسماء ---
+def init_db():
+    conn = sqlite3.connect('academy_data.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS leaderboard 
+                 (name TEXT, score INTEGER, level TEXT)''')
+    conn.commit()
+    conn.close()
 
-# =========================
-# Database Setup
-# =========================
-conn = sqlite3.connect("scores.db", check_same_thread=False)
-c = conn.cursor()
+def save_score(name, score, level):
+    conn = sqlite3.connect('academy_data.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO leaderboard VALUES (?, ?, ?)", (name, score, level))
+    conn.commit()
+    conn.close()
 
-c.execute("""
-CREATE TABLE IF NOT EXISTS leaderboard (
-    name TEXT,
-    score INTEGER
-)
-""")
-conn.commit()
+init_db()
 
-# =========================
-# Dictionary
-# =========================
-words = {
-    "كتاب": "book",
-    "قلم": "pen",
-    "شجرة": "tree",
-    "مدرسة": "school",
-    "سيارة": "car",
-    "جامعة": "university",
-    "مكتبة": "library"
+# --- 2. إعدادات الصفحة والوضع الليلي ---
+st.set_page_config(page_title="أكاديمية مصباح لطيف", page_icon="💡")
+
+# تنسيق الألوان والوضع الليلي (العربي أخضر / الإنجليزي أزرق)
+st.markdown("""
+    <style>
+    .stApp { background-color: #121212; color: white; } /* وضع ليلي */
+    .ar-text { color: #2ecc71; font-size: 28px; font-weight: bold; } /* أخضر */
+    .en-text { color: #3498db; font-size: 28px; font-weight: bold; } /* أزرق */
+    .stButton>button { border-radius: 20px; height: 3em; width: 100%; }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- 3. إدارة الجلسة (Session State) ---
+if 'page' not in st.session_state: st.session_state.page = 'welcome'
+if 'score' not in st.session_state: st.session_state.score = 0
+if 'player_name' not in st.session_state: st.session_state.player_name = ""
+if 'level' not in st.session_state: st.session_state.level = 'Easy'
+if 'repeat_used' not in st.session_state: st.session_state.repeat_used = False
+
+# قاموس تجريبي (يمكنك توسيعه)
+words_pool = {
+    'Easy': [{'en': 'Apple', 'ar': 'تفاحة'}, {'en': 'Sun', 'ar': 'شمس'}],
+    'Medium': [{'en': 'Knowledge', 'ar': 'معرفة'}, {'en': 'Success', 'ar': 'نجاح'}],
+    'Hard': [{'en': 'Sustainability', 'ar': 'استدامة'}, {'en': 'Philosophy', 'ar': 'فلسفة'}]
 }
 
-# =========================
-# Session State
-# =========================
-if "score" not in st.session_state:
-    st.session_state.score = 0
+# --- 4. صفحة الترحيب وتسجيل الاسم ---
+if st.session_state.page == 'welcome':
+    st.title("🌟 مرحباً بك في أكاديمية مصباح لطيف")
+    name = st.text_input("سجل اسمك يا بطل:")
+    level = st.selectbox("اختر مستوى التحدي:", ['Easy', 'Medium', 'Hard'])
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("📖 القاموس"):
+            if name:
+                st.session_state.player_name = name
+                st.session_state.level = level
+                st.session_state.page = 'dictionary'
+                st.rerun()
+    with col2:
+        if st.button("🎯 ابدأ الاختبار"):
+            if name:
+                st.session_state.player_name = name
+                st.session_state.level = level
+                st.session_state.page = 'quiz'
+                st.session_state.current_word = random.choice(words_pool[level])
+                st.rerun()
 
-if "current_word" not in st.session_state:
-    st.session_state.current_word = random.choice(list(words.items()))
+# --- 5. صفحة القاموس ---
+elif st.session_state.page == 'dictionary':
+    st.title(f"📖 قاموس - {st.session_state.level}")
+    for item in words_pool[st.session_state.level]:
+        st.markdown(f"<span class='en-text'>{item['en']}</span> : <span class='ar-text'>{item['ar']}</span>", unsafe_allow_html=True)
+    if st.button("⬅️ عودة"):
+        st.session_state.page = 'welcome'
+        st.rerun()
 
-if "repeat_used" not in st.session_state:
-    st.session_state.repeat_used = False
+# --- 6. صفحة الاختبار (المؤقت، النقاط، النطق) ---
+elif st.session_state.page == 'quiz':
+    st.header(f"🎯 المتسابق: {st.session_state.player_name}")
+    st.subheader(f"المستوى: {st.session_state.level} | النقاط: {st.session_state.score}")
+    
+    # مؤقت تنازلي بسيط (مثلاً 30 ثانية)
+    timer_placeholder = st.empty()
+    
+    st.markdown(f"ما معنى كلمة: <span class='en-text'>{st.session_state.current_word['en']}</span>", unsafe_allow_html=True)
+    
+    # ميزة النطق مرتين (وهمي عبر واجهة الصوت)
+    if st.button("🔊 نطق الكلمة (مرتين)"):
+        # ملاحظة: برمجياً نستخدم رابط صوتي مكرر
+        st.audio(f"https://translate.google.com/translate_tts?ie=UTF-8&q={st.session_state.current_word['en']}&tl=en&total=2&idx=0&textlen=5&client=tw-ob")
+        st.audio(f"https://translate.google.com/translate_tts?ie=UTF-8&q={st.session_state.current_word['en']}&tl=en&total=2&idx=1&textlen=5&client=tw-ob")
 
-if "time_left" not in st.session_state:
-    st.session_state.time_left = 15
-
-if "name" not in st.session_state:
-    st.session_state.name = ""
-
-# =========================
-# Audio Function
-# =========================
-def play_audio(text):
-    tts = gTTS(text=text, lang='en')
-    filename = f"temp_{uuid.uuid4()}.mp3"
-    tts.save(filename)
-    audio_file = open(filename, 'rb')
-    audio_bytes = audio_file.read()
-    st.audio(audio_bytes)
-    st.audio(audio_bytes)
-    os.remove(filename)
-
-# =========================
-# Header
-# =========================
-st.title("🏆 Professional Vocabulary Quiz")
-
-st.session_state.name = st.text_input("👤 Enter your name")
-
-st.markdown(f"### 🎯 Score: {st.session_state.score}")
-st.markdown(f"### ⏳ Time Left: {st.session_state.time_left}")
-
-st.divider()
-
-# =========================
-# Show Word
-# =========================
-arabic, english = st.session_state.current_word
-
-st.markdown(
-    f"<h2 style='text-align:center; color:green;'>{arabic}</h2>",
-    unsafe_allow_html=True
-)
-
-play_audio(english)
-
-# =========================
-# Input
-# =========================
-answer = st.text_input("✍️ Write English word")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    if st.button("✅ Submit"):
-        if answer.lower().strip() == english:
-            st.success("Correct ✅")
-            st.session_state.score += 10
-            st.session_state.current_word = random.choice(list(words.items()))
-            st.session_state.repeat_used = False
-            st.session_state.time_left = 15
-            st.rerun()
-        else:
-            st.error("Wrong ❌ Try again")
-
-with col2:
-    if st.button("💡 Hint"):
-        st.info(f"First letter: {english[0]}")
-
-with col3:
-    if st.button("🔁 Repeat"):
+    ans = st.text_input("الإجابة بالعربي:", key="q_input")
+    
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        if st.button("تحقق ✅"):
+            if ans == st.session_state.current_word['ar']:
+                st.success("أحسنت! +10")
+                st.session_state.score += 10
+                st.session_state.current_word = random.choice(words_pool[st.session_state.level])
+                st.session_state.repeat_used = False
+                st.rerun()
+            else:
+                st.error("❌ خطأ! تبقى نفس الكلمة.") # إذا يخطأ تبقى نفس الكلمة
+    
+    with col_b:
         if not st.session_state.repeat_used:
-            play_audio(english)
-            st.session_state.repeat_used = True
-        else:
-            st.error("Repeat already used!")
+            if st.button("🔁 إعادة"):
+                st.session_state.repeat_used = True
+                st.info("لديك محاولة إعادة واحدة فقط لهذه الكلمة")
+    
+    with col_c:
+        if st.button("🏁 إنهاء"):
+            save_score(st.session_state.player_name, st.session_state.score, st.session_state.level)
+            st.session_state.page = 'results'
+            st.rerun()
 
-# =========================
-# Timer
-# =========================
-time.sleep(1)
-st.session_state.time_left -= 1
+# --- 7. صفحة النتائج و Leaderboard ---
+elif st.session_state.page == 'results':
+    st.title("📊 لوحة الشرف (Leaderboard)")
+    st.balloons()
+    st.success(f"عاشت إيدك يا {st.session_state.player_name}! نقاطك النهائية: {st.session_state.score}")
+    
+    # عرض الـ Leaderboard من القاعدة
+    conn = sqlite3.connect('academy_data.db')
+    import pandas as pd
+    df = pd.read_sql_query("SELECT name, score, level FROM leaderboard ORDER BY score DESC LIMIT 5", conn)
+    st.table(df)
+    conn.close()
+    
+    if st.button("🔄 العودة للبداية (Reset)"):
+        st.session_state.score = 0
+        st.session_state.page = 'welcome'
+        st.rerun()
 
-if st.session_state.time_left <= 0:
-    st.warning("⏰ Time's up!")
-    st.session_state.current_word = random.choice(list(words.items()))
-    st.session_state.time_left = 15
-    st.rerun()
-
-# =========================
-# Save Score
-# =========================
-if st.button("💾 Save Score"):
-    if st.session_state.name != "":
-        c.execute("INSERT INTO leaderboard VALUES (?, ?)",
-                  (st.session_state.name, st.session_state.score))
-        conn.commit()
-        st.success("Score Saved!")
-    else:
-        st.error("Enter your name first!")
-
-# =========================
-# Leaderboard
-# =========================
-st.divider()
-st.subheader("🏅 Top Players")
-
-c.execute("SELECT name, score FROM leaderboard ORDER BY score DESC LIMIT 5")
-top_players = c.fetchall()
-
-for player in top_players:
-    st.write(f"{player[0]} — {player[1]} points")
-
-# =========================
-# Reset
-# =========================
-if st.button("🔄 Reset Game"):
-    st.session_state.score = 0
-    st.session_state.current_word = random.choice(list(words.items()))
-    st.session_state.time_left = 15
-    st.session_state.repeat_used = False
-    st.rerun()
-
-# =========================
-# Footer
-# =========================
-st.markdown("""
----
-🔗 My Streamlit App:  
-https://share.streamlit.io/user/mqasmkrem-a11y
-""")
+# --- موسيقى خلفية هادئة ---
+st.markdown("---")
+st.write("🎵 موسيقى هادئة:")
+st.audio("https://www.soundjay.com/nature/sounds/river-1.mp3")
+st.markdown(f"[🔗 إدارة التطبيق](https://share.streamlit.io/user/mqasmkrem-a11y)")
