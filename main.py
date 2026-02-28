@@ -1,80 +1,72 @@
 import streamlit as st
 import random
 
-# --- 1. إعدادات الصفحة والتصميم ---
-st.set_page_config(page_title="أكاديمية مصباح لطيف", page_icon="💡", layout="centered")
+# --- 1. إعدادات الصفحة (تصميم بسيط ومرتب) ---
+st.set_page_config(page_title="أكاديمية مصباح لطيف", page_icon="💡")
 
-# تنسيق الألوان (العربية أخضر، الإنجليزية أزرق)
+# تنسيق الألوان (عربي أخضر، إنجليزي أزرق)
 st.markdown("""
     <style>
-    .ar-text { color: #2ecc71; font-size: 28px; font-weight: bold; text-align: center; }
-    .en-text { color: #3498db; font-size: 28px; font-weight: bold; text-align: center; }
-    .score-text { color: #f39c12; font-size: 20px; font-weight: bold; }
-    div.stButton > button:first-child { width: 100%; border-radius: 10px; }
+    .ar-style { color: #2ecc71; font-size: 25px; font-weight: bold; }
+    .en-style { color: #3498db; font-size: 25px; font-weight: bold; }
+    .stButton>button { width: 100%; height: 3em; border-radius: 10px; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. القاموس المرتب (عينة من الكلمات) ---
-# يمكنك إضافة المزيد من الكلمات هنا بنفس الترتيب
+# --- 2. القاموس (الجزء الأول) ---
 if 'dictionary' not in st.session_state:
     st.session_state.dictionary = [
         {"en": "Success", "ar": "نجاح", "hint": "عكس الفشل"},
-        {"en": "Knowledge", "ar": "معرفة", "hint": "ما نحصل عليه من القراءة"},
-        {"en": "Light", "ar": "ضوء", "hint": "يأتي من الشمس أو المصباح"},
-        {"en": "Friend", "ar": "صديق", "hint": "شخص نحبه ونثق به"},
-        {"en": "Future", "ar": "مستقبل", "hint": "الأيام القادمة"}
+        {"en": "Knowledge", "ar": "معرفة", "hint": "تأتي من الدراسة"},
+        {"en": "Light", "ar": "ضوء", "hint": "يخرج من المصباح"},
+        {"en": "Friend", "ar": "صديق", "hint": "شخص تحبه"},
+        {"en": "Future", "ar": "مستقبل", "hint": "الأيام الجاية"}
     ]
 
-# --- 3. نظام النقاط الثابت (Session State) ---
+# --- 3. حفظ النقاط (عشان ما تصفر) ---
 if 'score' not in st.session_state:
     st.session_state.score = 0
-if 'current_item' not in st.session_state:
-    st.session_state.current_item = random.choice(st.session_state.dictionary)
+if 'current_word' not in st.session_state:
+    st.session_state.current_word = random.choice(st.session_state.dictionary)
 
-# --- 4. واجهة التطبيق ---
-st.title("💡 قاموس واختبار مصباح لطيف")
-st.markdown(f"<div class='score-text'>🏆 نقاطك الحالية: {st.session_state.score}</div>", unsafe_allow_html=True)
+# --- 4. واجهة الاختبار ---
+st.title("💡 اختبار مصباح لطيف")
+st.write(f"### مجموع نقاطك الحالي: {st.session_state.score} 🏆")
 
-st.divider()
+st.markdown("---")
+st.write("ما معنى الكلمة التالية؟")
+st.markdown(f"<div class='en-style'>{st.session_state.current_word['en']}</div>", unsafe_allow_html=True)
 
-# عرض الكلمة المراد اختبارها
-st.markdown("### ما معنى هذه الكلمة؟")
-st.markdown(f"<div class='en-text'>{st.session_state.current_item['en']}</div>", unsafe_allow_html=True)
-
-# إدخال الإجابة
-user_input = st.text_input("اكتب المعنى بالعربي:", key="user_ans").strip()
+# إدخال الجواب
+user_ans = st.text_input("اكتب الإجابة بالعربي هنا:", key="ans_input").strip()
 
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("✅ تحقق"):
-        if user_input == st.session_state.current_item['ar']:
-            st.success("إجابة صحيحة! +10 نقاط")
+    if st.button("تحقق ✅"):
+        if user_ans == st.session_state.current_word['ar']:
+            st.success("صح! +10 نقاط")
             st.session_state.score += 10
-            st.session_state.current_item = random.choice(st.session_state.dictionary)
+            # تغيير الكلمة بعد الصح
+            st.session_state.current_word = random.choice(st.session_state.dictionary)
             st.rerun()
         else:
-            st.error(f"خطأ! الإجابة كانت: {st.session_state.current_item['ar']}")
-            # تغيير الكلمة فوراً عند الخطأ كما طلبت
-            st.session_state.current_item = random.choice(st.session_state.dictionary)
-            st.info("جرب حظك مع كلمة جديدة!")
+            st.error(f"خطأ! الإجابة كانت: {st.session_state.current_word['ar']}")
+            # ميزة التغيير الفوري عند الخطأ كما طلبت
+            st.session_state.current_word = random.choice(st.session_state.dictionary)
+            st.info("تم الانتقال لكلمة جديدة.. حاول مرة ثانية")
             st.rerun()
 
 with col2:
     if st.button("💡 مساعدة"):
-        st.warning(f"تلميح: {st.session_state.current_item['hint']}")
+        st.warning(f"تلميح: {st.session_state.current_word['hint']}")
 
-# --- 5. قسم القاموس المرتب ---
-st.divider()
-with st.expander("📖 عرض القاموس الكامل"):
-    for item in st.session_state.dictionary:
-        st.markdown(f"🔹 <span class='en-text'>{item['en']}</span> = <span class='ar-text'>{item['ar']}</span>", unsafe_allow_html=True)
-
-# --- 6. الصوت والروابط ---
+# --- 5. القاموس (مرتب بالألوان) ---
 st.markdown("---")
-st.write("🎵 صوت الطبيعة (شلالات):")
-# رابط صوت شلالات طبيعي
-st.audio("https://www.soundjay.com/nature/sounds/waterfall-01.mp3")
+with st.expander("📖 القاموس"):
+    for item in st.session_state.dictionary:
+        st.markdown(f"<span class='en-style'>{item['en']}</span> = <span class='ar-style'>{item['ar']}</span>", unsafe_allow_html=True)
 
+# --- 6. الرابط المطلوب في الأخير ---
 st.markdown("---")
 st.markdown(f"[🔗 رابط إدارة التطبيق](https://share.streamlit.io/user/mqasmkrem-a11y)")
