@@ -3,7 +3,7 @@ import pandas as pd
 import random
 import time
 
-# --- 1. الإعدادات والجمالية (الغابة والجبال) ---
+# --- 1. الإعدادات والجمالية ---
 st.set_page_config(page_title="Abt Royal Academy", layout="wide")
 
 st.markdown("""
@@ -25,77 +25,94 @@ st.markdown("""
     <div class="overlay"></div>
     """, unsafe_allow_html=True)
 
-# --- 2. جلب الكلمات من ملف vocab.csv (سطر 12-14) ---
+# --- 2. جلب الكلمات من GitHub (ملف vocab.csv) ---
 @st.cache_data
 def load_vocab():
-    # الرابط المباشر لملفك على GitHub المستخرج من الصورة
     url = "https://raw.githubusercontent.com/mohammedqasmkrem-maker/congenial-lamp/main/vocab.csv"
     try:
-        # قراءة الملف وتنظيف الكلمات من الأرقام (مثل 1. Time)
+        # قراءة الملف وتنظيفه (1011 سطر)
         df = pd.read_csv(url, sep=' - ', engine='python', names=['English', 'Arabic'])
         df['English'] = df['English'].str.replace(r'^\d+\.\s*', '', regex=True)
-        return df.to_dict('records')
+        return df.dropna().to_dict('records')
     except:
         return [{"English": "Time", "Arabic": "الوقت"}]
 
-# --- 3. تهيئة النظام (منع خطأ AttributeError) ---
+# --- 3. تهيئة النظام (حل مشكلة AttributeError) ---
+if 'score' not in st.session_state:
+    st.session_state.score = 0
+if 'streak' not in st.session_state:
+    st.session_state.streak = 0
+if 'page' not in st.session_state:
+    st.session_state.page = "hall"
 if 'db' not in st.session_state:
     st.session_state.db = load_vocab()
-    st.session_state.score = 0
-    st.session_state.streak = 0
-    st.session_state.page = "hall"
+if 'current_word' not in st.session_state:
     st.session_state.current_word = random.choice(st.session_state.db)
+
+# --- 4. نافذة الدعاء الملكية ---
+if 'show_dua' not in st.session_state:
     st.session_state.show_dua = True
 
-# --- 4. نافذة الدعاء التلقائية ---
 if st.session_state.show_dua:
     st.markdown("""<div style='background:#0a1a10; padding:30px; border:2px solid #D4AC0D; border-radius:15px; text-align:center;'>
     <h2 class='gold-text'>✨ دعاء طلب العلم</h2>
     <p style='color:white; font-size:22px;'>اللهم انفعني بما علمتني، وعلمني ما ينفعني، وزدني علماً.</p>
     </div>""", unsafe_allow_html=True)
-    if st.button("آمين - دخول الأكاديمية", use_container_width=True):
+    if st.button("آمين - دخول الأكاديمية"):
         st.session_state.show_dua = False
         st.rerun()
 
-# --- 5. الواجهة الرئيسية ---
+# --- 5. الواجهة الرئيسية (نظام الغرف) ---
 elif st.session_state.page == "hall":
     st.markdown("<h1 style='text-align:center;' class='gold-text'>🌲 قصر Abt الملكي 🌲</h1>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown(f"<div class='royal-card'><h2 class='gold-text'>👤 الملف الشخصي</h2><p>نقاطك الحقيقية: {st.session_state.score} | الـ Streak: {st.session_state.streak}</p></div>", unsafe_allow_html=True)
-        if st.button("فتح السجل 🎖️", use_container_width=True): st.session_state.page = "profile"
+        st.markdown(f"<div class='royal-card'><h2 class='gold-text'>👤 الملف الشخصي</h2><p>نقاطك: {st.session_state.score} | الـ Streak: {st.session_state.streak}</p></div>", unsafe_allow_html=True)
+        if st.button("فتـح السجـل 🎖️", use_container_width=True): st.session_state.page = "profile"
+
+        # هذا هو القاموس اللي سألت عليه
+        st.markdown("<div class='royal-card'><h2 class='gold-text'>📖 القاموس الملكي</h2><p>استعرض الـ 1011 كلمة كاملة</p></div>", unsafe_allow_html=True)
+        if st.button("فتح القاموس 📚", use_container_width=True): st.session_state.page = "dictionary"
 
     with col2:
         st.markdown("<div class='royal-card'><h2 class='gold-text'>✍️ تحدي الكلمات</h2><p>اختبر كلماتك من ملف vocab.csv</p></div>", unsafe_allow_html=True)
         if st.button("بدء التحدي ⚔️", use_container_width=True): st.session_state.page = "game"
 
-    st.markdown("<div class='royal-card'><h2 class='gold-text'>🌿 الطبيعة الحلال</h2><p>فيديو الاسترخاء والتركيز</p></div>", unsafe_allow_html=True)
-    if st.button("دخول الغرفة 🧘", use_container_width=True): st.session_state.page = "nature"
+        st.markdown("<div class='royal-card'><h2 class='gold-text'>🌿 الطبيعة الحلال</h2><p>فيديو الاسترخاء والتركيز</p></div>", unsafe_allow_html=True)
+        if st.button("دخول الغرفة 🧘", use_container_width=True): st.session_state.page = "nature"
 
-    st.markdown(f"<p style='text-align:center; color:white;'>المنصة الرسمية: <a href='https://share.streamlit.io/user/mqasmkrem-a11y' style='color:#D4AC0D;'>mqasmkrem-a11y</a></p>", unsafe_allow_html=True)
+# --- 6. صفحة القاموس (Dictionary) ---
+elif st.session_state.page == "dictionary":
+    st.markdown("<h2 class='gold-text' style='text-align:center;'>📖 قاموس الـ 1011 كلمة</h2>", unsafe_allow_html=True)
+    if st.button("🔙 العودة للقصر"): st.session_state.page = "hall"; st.rerun()
+    
+    search = st.text_input("🔍 ابحث عن كلمة إنجليزية أو عربية:").lower()
+    
+    for i, w in enumerate(st.session_state.db):
+        if search in w['English'].lower() or search in w['Arabic']:
+            cols = st.columns([3, 1])
+            cols[0].write(f"**{i+1}. {w['English']}** = {w['Arabic']}")
+            if cols[1].button("🔊", key=f"voc_{i}"):
+                st.audio(f"https://dict.youdao.com/dictvoice?audio={w['English']}&type=2")
 
-# --- 6. منطق الغرف ---
+# --- 7. بقية الغرف (الاختبار والطبيعة) ---
 elif st.session_state.page == "game":
     if st.button("🔙 عودة"): st.session_state.page = "hall"; st.rerun()
     word = st.session_state.current_word
-    st.markdown(f"<div class='royal-card'><h1 class='gold-text'>{word['English']}</h1><p>ما ترجمة هذه الكلمة من ملفك؟</p></div>", unsafe_allow_html=True)
-    
-    ans = st.text_input("اكتب الترجمة العربية:").strip()
+    st.markdown(f"<div class='royal-card'><h1 class='gold-text'>{word['English']}</h1><p>ما الترجمة الصحيحة؟</p></div>", unsafe_allow_html=True)
+    ans = st.text_input("الترجمة:").strip()
     if st.button("تحقق ✅"):
         if ans == word['Arabic']:
             st.session_state.score += 50
             st.session_state.streak += 1
-            st.success("أحسنت! إجابة ملكية.")
+            st.success("أحسنت!")
             st.session_state.current_word = random.choice(st.session_state.db)
             time.sleep(1); st.rerun()
         else:
-            st.error(f"خطأ! الترجمة هي: {word['Arabic']}")
+            st.error(f"خطأ! الترجمة: {word['Arabic']}")
             st.session_state.streak = 0
 
 elif st.session_state.page == "nature":
-    if st.button("🔙 عودة للقصر"): st.session_state.page = "hall"; st.rerun()
-    st.markdown("<h2 class='gold-text' style='text-align:center;'>🌿 غرفة الهدوء الملكية</h2>", unsafe_allow_html=True)
-    # إضافة الفيديو المطلوب
+    if st.button("🔙 عودة"): st.session_state.page = "hall"; st.rerun()
     st.video("https://youtu.be/0wt-HbRw_pw?si=IJ23Q_Mcbb07Kdny")
-                
