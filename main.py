@@ -5,8 +5,8 @@ import time
 import requests
 import re
 
-# --- 1. التصميم الجديد (واجهة عصرية غامقة) ---
-st.set_page_config(page_title="Abt Academy v3", layout="centered")
+# --- 1. التصميم السينمائي (نظام الغرف) ---
+st.set_page_config(page_title="Abt Royal Rooms", layout="centered")
 
 st.markdown("""
     <style>
@@ -14,38 +14,39 @@ st.markdown("""
         background: url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000");
         background-size: cover; background-attachment: fixed;
     }
-    /* حاوية الغرف */
-    .room-box {
-        background: rgba(15, 15, 15, 0.95);
-        padding: 20px; border-radius: 25px;
-        border: 1px solid #D4AC0D; color: white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    /* حاوية الغرفة الواحدة */
+    .room-container {
+        background: rgba(0, 0, 0, 0.9);
+        padding: 30px; border-radius: 30px;
+        border: 2px solid #D4AC0D; color: white;
+        text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
     }
-    /* كروت الكلمات */
+    /* كروت الكلمات الفخمة */
     .word-card {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 15px; border-radius: 15px;
-        margin-bottom: 10px; border-right: 5px solid #D4AC0D;
+        background: linear-gradient(to right, rgba(212,172,13,0.1), rgba(0,0,0,0.5));
+        padding: 20px; border-radius: 15px;
+        margin: 15px 0; border-left: 6px solid #D4AC0D;
         display: flex; justify-content: space-between; align-items: center;
+        font-size: 22px;
     }
-    /* الأزرار الملكية */
+    /* أزرار الغرف الكبيرة */
     .stButton>button {
-        background: #D4AC0D !important; color: black !important;
-        font-weight: bold !important; border-radius: 12px !important;
-        border: none !important; width: 100%; height: 50px;
+        background: linear-gradient(135deg, #D4AC0D, #B8860B) !important;
+        color: black !important; font-weight: bold !important;
+        height: 65px !important; border-radius: 18px !important;
+        font-size: 20px !important; margin-bottom: 15px;
+        border: none !important; transition: 0.3s;
     }
-    .nav-btn button {
-        background: #333 !important; color: white !important;
-        height: 35px !important; font-size: 14px !important;
-    }
+    .stButton>button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px #D4AC0D; }
+    .back-btn button { background: #222 !important; color: white !important; height: 45px !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. محرك جلب البيانات (1011 كلمة) ---
+# --- 2. محرك جلب الـ 1011 كلمة (بدون أخطاء) ---
 @st.cache_data
-def load_data():
+def get_clean_data():
     url = "https://raw.githubusercontent.com/mohammedqasmkrem-maker/congenial-lamp/main/vocab.csv"
-    data = []
+    words = []
     try:
         r = requests.get(url)
         if r.status_code == 200:
@@ -55,123 +56,109 @@ def load_data():
                     p = line.split(" - ")
                     eng = re.sub(r'^\d+\.\s*', '', p[0]).strip()
                     ara = p[1].strip()
-                    if eng and ara: data.append({"eng": eng, "ara": ara})
-        return data
-    except: return [{"eng": "Error", "ara": "خطأ"}]
+                    if eng and ara: words.append({"eng": eng, "ara": ara})
+        return words
+    except: return [{"eng": "Network Error", "ara": "خطأ اتصال"}]
 
-# --- 3. الجلسة والتنقل ---
-if 'db' not in st.session_state: st.session_state.db = load_data()
+# --- 3. إدارة الجلسة ---
+if 'db' not in st.session_state: st.session_state.db = get_clean_data()
 if 'page' not in st.session_state: st.session_state.page = "dua"
 if 'score' not in st.session_state: st.session_state.score = 0
-if 'dict_page' not in st.session_state: st.session_state.dict_page = 0
 
 def speak(txt):
     st.audio(f"https://dict.youdao.com/dictvoice?audio={txt}&type=2")
 
-# --- 4. الغرف ---
+# --- 4. الدخول إلى الغرف ---
 with st.container():
-    st.markdown('<div class="room-box">', unsafe_allow_html=True)
+    st.markdown('<div class="room-container">', unsafe_allow_html=True)
 
-    # --- الغرفة 1: الدعاء ---
+    # --- الغرفة [1]: دعاء طلب العلم ---
     if st.session_state.page == "dua":
-        st.markdown("<h2 style='text-align:center; color:#D4AC0D;'>✨ دعاء البداية</h2>", unsafe_allow_html=True)
+        st.markdown("<h1 style='color:#D4AC0D;'>✨ بوابه العلم</h1>", unsafe_allow_html=True)
         st.write("اللهم انفعني بما علمتني، وعلمني ما ينفعني، وزدني علماً.")
-        if st.button("آمين - دخول الأكاديمية"):
+        if st.button("آمين - دخول القصر"):
             st.session_state.page = "hall"; st.rerun()
 
-    # --- الغرفة 2: القصر الرئيسي ---
+    # --- الغرفة [2]: القصر الرئيسي (المدخل) ---
     elif st.session_state.page == "hall":
-        st.markdown("<h1 style='text-align:center; color:#D4AC0D;'>🏔️ قصر Abt الملكي</h1>", unsafe_allow_html=True)
-        st.write(f"المكتبة محملة: {len(st.session_state.db)} كلمة")
+        st.markdown("<h1 style='color:#D4AC0D;'>🏔️ مدخل القصر الملكي</h1>", unsafe_allow_html=True)
+        st.write(f"المكتبة محملة بـ {len(st.session_state.db)} كلمة")
+        st.write("---")
         
-        if st.button("📖 القاموس (نظام الصفحات)"): st.session_state.page = "dict"; st.rerun()
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("✍️ اختبار التحقق"): st.session_state.page = "test"; st.rerun()
-        with col2:
-            if st.button("⏳ تحدي 60 ثانية"): 
-                st.session_state.start_t = time.time()
-                st.session_state.q = random.choice(st.session_state.db)
-                st.session_state.page = "blitz"; st.rerun()
-        
-        if st.button("👤 الملف الشخصي"): st.session_state.page = "profile"; st.rerun()
-        if st.button("🌿 غرفة الاسترخاء"): st.session_state.page = "relax"; st.rerun()
+        # أزرار الغرف
+        if st.button("🚪 غرفة القاموس والمراجعة"): st.session_state.page = "dict"; st.rerun()
+        if st.button("⚔️ غرفة الاختبار الذكي"): st.session_state.page = "test"; st.rerun()
+        if st.button("🔥 غرفة تحدي الـ 60 ثانية"): 
+            st.session_state.start_t = time.time()
+            st.session_state.q = random.choice(st.session_state.db)
+            st.session_state.page = "blitz"; st.rerun()
+        if st.button("👤 غرفة الملف الشخصي"): st.session_state.page = "profile"; st.rerun()
+        if st.button("🍃 غرفة الاسترخاء"): st.session_state.page = "relax"; st.rerun()
 
-    # --- الغرفة 3: القاموس (نظام الصفحات) ---
+    # --- الغرفة [3]: غرفة القاموس (تصميم كروت المراجعة) ---
     elif st.session_state.page == "dict":
-        st.markdown("<div class='nav-btn'>", unsafe_allow_html=True)
-        if st.button("🔙 العودة للقصر"): st.session_state.page = "hall"; st.rerun()
+        st.markdown("<div class='back-btn'>", unsafe_allow_html=True)
+        if st.button("🔙 مغادرة الغرفة والعودة للمدخل"): st.session_state.page = "hall"; st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
         
-        st.markdown("<h3 style='color:#D4AC0D;'>📖 القاموس الملكي</h3>", unsafe_allow_html=True)
+        st.markdown("<h2 style='color:#D4AC0D;'>📖 مراجعة الـ 1011 كلمة</h2>", unsafe_allow_html=True)
+        search = st.text_input("🔍 ابحث في القاموس...")
         
-        # البحث
-        search = st.text_input("🔍 ابحث عن كلمة:")
         filtered = [w for w in st.session_state.db if search.lower() in w['eng'].lower() or search in w['ara']]
         
-        # إعداد الصفحات (كل صفحة 10 كلمات عشان الموبايل)
-        words_per_page = 10
-        total_pages = (len(filtered) // words_per_page)
-        
-        col_prev, col_page, col_next = st.columns([1, 2, 1])
-        with col_prev:
-            if st.button("⬅️ السابق") and st.session_state.dict_page > 0:
-                st.session_state.dict_page -= 1; st.rerun()
-        with col_page:
-            st.write(f"صفحة {st.session_state.dict_page + 1} من {total_pages + 1}")
-        with col_next:
-            if st.button("التالي ➡️") and st.session_state.dict_page < total_pages:
-                st.session_state.dict_page += 1; st.rerun()
-
-        start_idx = st.session_state.dict_page * words_per_page
-        for i, w in enumerate(filtered[start_idx : start_idx + words_per_page]):
-            col_txt, col_spk = st.columns([4, 1])
+        for i, w in enumerate(filtered[:50]): # عرض 50 في كل مرة لضمان السرعة
+            col_txt, col_spk = st.columns([5, 1])
             with col_txt:
-                st.markdown(f"<div class='word-card'><b>{w['eng']}</b> <span>{w['ara']}</span></div>", unsafe_allow_html=True)
+                st.markdown(f"""<div class="word-card">
+                    <span style="font-weight:bold;">{w['eng']}</span>
+                    <span style="color:#D4AC0D;">{w['ara']}</span>
+                </div>""", unsafe_allow_html=True)
             with col_spk:
+                st.write("") # للمسافة
                 if st.button("🔊", key=f"v{i}"): speak(w['eng'])
 
-    # --- الغرفة 4: اختبار التحقق ---
+    # --- الغرفة [4]: غرفة الاختبار ---
     elif st.session_state.page == "test":
-        if st.button("🔙 عودة"): st.session_state.page = "hall"; st.rerun()
+        if st.button("🔙 عودة للمدخل"): st.session_state.page = "hall"; st.rerun()
         if 't_q' not in st.session_state: st.session_state.t_q = random.choice(st.session_state.db)
         tq = st.session_state.t_q
-        st.markdown(f"<h3 style='text-align:center;'>ما معنى كلمة: <br><span style='color:#D4AC0D;'>{tq['eng']}</span></h3>", unsafe_allow_html=True)
-        ans = st.text_input("الإجابة العربية:")
-        if st.button("تحقق ✅"):
+        st.markdown(f"### ما معنى كلمة: <br><span style='font-size:40px; color:#D4AC0D;'>{tq['eng']}</span>", unsafe_allow_html=True)
+        ans = st.text_input("اكتب الترجمة العربية:")
+        if st.button("تحقق من الإجابة ✅"):
             if ans.strip() == tq['ara']:
-                st.success("إجابة صحيحة!"); st.session_state.score += 10
+                st.success("بطل! إجابة صحيحة"); st.session_state.score += 20
                 st.session_state.t_q = random.choice(st.session_state.db)
                 time.sleep(1); st.rerun()
-            else: st.error("خطأ، حاول مرة ثانية")
+            else: st.error("خطأ، ركز وحاول مرة ثانية")
 
-    # --- الغرفة 5: تحدي الـ 60 ثانية ---
+    # --- الغرفة [5]: غرفة تحدي 60 ثانية ---
     elif st.session_state.page == "blitz":
-        elapsed = int(time.time() - st.session_state.start_t)
-        if elapsed >= 60:
-            st.error("انتهى الوقت!"); st.button("عودة للقصر", on_click=lambda: setattr(st.session_state, 'page', 'hall'))
+        rem = 60 - int(time.time() - st.session_state.start_t)
+        if rem <= 0:
+            st.error("💥 انتهى الوقت!"); st.button("خروج", on_click=lambda: setattr(st.session_state, 'page', 'hall'))
         else:
-            st.markdown(f"<h2 style='color:red; text-align:center;'>⏳ {60 - elapsed}</h2>", unsafe_allow_html=True)
+            st.markdown(f"<h1 style='color:red;'>⏳ {rem}</h1>", unsafe_allow_html=True)
             q = st.session_state.q
-            st.write(f"### ترجم: {q['eng']}")
-            ans = st.text_input("الترجمة:")
+            st.write(f"## ترجم بسرعة: {q['eng']}")
+            ans = st.text_input("الإجابة:")
             if st.button("تحقق ✅"):
                 if ans.strip() == q['ara']:
                     st.session_state.score += 50
                     st.session_state.q = random.choice(st.session_state.db)
-                    st.success("أحسنت!"); time.sleep(0.3); st.rerun()
+                    st.rerun()
         if st.button("🔙 انسحاب"): st.session_state.page = "hall"; st.rerun()
 
-    # --- الغرفة 6: الملف الشخصي ---
+    # --- الغرفة [6]: غرفة الملف الشخصي ---
     elif st.session_state.page == "profile":
-        st.markdown("<h2 style='text-align:center; color:#D4AC0D;'>👤 ملف البطل</h2>", unsafe_allow_html=True)
-        st.write(f"مجموع نقاطك: {st.session_state.score}")
-        if st.button("🔙 عودة للقصر"): st.session_state.page = "hall"; st.rerun()
+        st.markdown("<h1 style='color:#D4AC0D;'>👤 ملف البطل</h1>", unsafe_allow_html=True)
+        st.write(f"نقاطك الحالية: {st.session_state.score}")
+        if st.button("🔙 العودة للمدخل"): st.session_state.page = "hall"; st.rerun()
 
-    # --- الغرفة 7: الاسترخاء ---
+    # --- الغرفة [7]: غرفة الاسترخاء ---
     elif st.session_state.page == "relax":
+        st.markdown("### 🍃 استراحة المحارب")
         st.video("https://www.youtube.com/watch?v=0wt-HbRw_pw")
-        if st.button("🔙 عودة"): st.session_state.page = "hall"; st.rerun()
+        if st.button("🔙 العودة للمدخل"): st.session_state.page = "hall"; st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
+    
