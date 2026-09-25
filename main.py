@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import random
 import time
 import requests
@@ -6,6 +7,13 @@ import re
 
 # --- 1. التصميم الزجاجي الفخم ---
 st.set_page_config(page_title="Abt Academy Pro", layout="wide", initial_sidebar_state="collapsed")
+
+# --- إضافة رمز إثبات ملكية AdSense تلقائياً ---
+adsense_verification_code = """
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2272014930208509"
+     crossorigin="anonymous"></script>
+"""
+components.html(adsense_verification_code, height=0)
 
 st.markdown("""
     <style>
@@ -207,7 +215,7 @@ elif st.session_state.page == "dict":
     else:
         st.info("لا توجد نتائج تطابق بحثك.")
 
-# [4] غرفة الاختبار الذكية (التحقق المرن + خيارات نطق الصوت)
+# [4] غرفة الاختبار الذكية
 elif st.session_state.page == "test":
     if st.button("🔙 إنهاء الاختبار", key="back_from_test"): 
         st.session_state.page = "main"
@@ -229,10 +237,8 @@ elif st.session_state.page == "test":
         if st.button("تحقق ✅", key="btn_check_answer"):
             user_input = ans.strip().lower()
             
-            # تفكيك المعاني المتعددة المقسمة بـ / أو ، أو -
             possible_meanings = [m.strip().lower() for m in re.split(r'[/،,-]', word['ara'])]
             
-            # التحقق إذا كانت إجابة المستخدم تطابق الكلمة الإنجليزية أو أحد المعاني العربية
             if user_input == word['eng'].strip().lower() or user_input in possible_meanings:
                 st.success("إجابة صحيحة! +20 نقطة 🎉")
                 st.session_state.score += 20
@@ -300,4 +306,3 @@ elif st.session_state.page == "favs":
                 speak(w['eng'])
     else:
         st.info("لم تقم بإضافة أي كلمات للمفضلة بعد.")
-    
