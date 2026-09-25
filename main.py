@@ -1,22 +1,18 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import random
 import time
 import requests
 import re
 
-# --- 1. الإعدادات والتصميم الزجاجي ---
+# --- 1. الإعدادات والتصميم الزجاجي + زرع كود AdSense في الهيد مباشرة ---
 st.set_page_config(page_title="Abt Academy Pro", layout="wide", initial_sidebar_state="collapsed")
 
-# دالة مخصصة لزرع رمز AdSense في الصفحة الحالية
-def inject_adsense():
-    adsense_code = """
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2272014930208509"
-         crossorigin="anonymous"></script>
-    """
-    components.html(adsense_code, height=0)
-
+# حقن كود AdSense المباشر في رأس الصفحة بدون iframe
 st.markdown("""
+    <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2272014930208509" crossorigin="anonymous"></script>
+        <meta name="google-adsense-account" content="ca-pub-2272014930208509">
+    </head>
     <style>
     .stApp {
         background: url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000");
@@ -113,11 +109,10 @@ if 'test_word' not in st.session_state:
 def speak(text):
     st.audio(f"https://dict.youdao.com/dictvoice?audio={text}&type=2")
 
-# --- 4. الشاشات والغرف (مع تضمين الرمز في كل غرفة) ---
+# --- 4. الشاشات والغرف ---
 
 # [1] غرفة الدعاء
 if st.session_state.page == "dua":
-    inject_adsense()
     st.markdown("""
     <div class="glass-card" style="text-align:center;">
         <h1>✨ فاتحة طلب العلم</h1>
@@ -131,7 +126,6 @@ if st.session_state.page == "dua":
 
 # [2] القاعة الرئيسية
 elif st.session_state.page == "main":
-    inject_adsense()
     st.markdown(f"""
     <div class="glass-card" style="text-align:center;">
         <h1>🏔️ أكاديمية أبت الذكية</h1>
@@ -166,7 +160,6 @@ elif st.session_state.page == "main":
 
 # [3] غرفة القاموس
 elif st.session_state.page == "dict":
-    inject_adsense()
     if st.button("🔙 عودة للقاعة الرئيسية", key="back_from_dict"): 
         st.session_state.page = "main"
         st.rerun()
@@ -221,7 +214,6 @@ elif st.session_state.page == "dict":
 
 # [4] غرفة الاختبار الذكية
 elif st.session_state.page == "test":
-    inject_adsense()
     if st.button("🔙 إنهاء الاختبار", key="back_from_test"): 
         st.session_state.page = "main"
         st.rerun()
@@ -259,7 +251,6 @@ elif st.session_state.page == "test":
 
 # [5] الملف الشخصي
 elif st.session_state.page == "profile":
-    inject_adsense()
     rank = "مستكشف 🌲" if st.session_state.score < 500 else "فارس ⚔️" if st.session_state.score < 1500 else "إمبراطور القمة 👑"
     
     st.markdown(f"""
@@ -280,7 +271,6 @@ elif st.session_state.page == "profile":
 
 # [6] غرفة الاسترخاء
 elif st.session_state.page == "relax":
-    inject_adsense()
     st.markdown("""
     <div class="glass-card" style="text-align:center;">
         <h1>🌿 غرفة الاسترخاء والتركيز</h1>
@@ -295,7 +285,6 @@ elif st.session_state.page == "relax":
 
 # [7] غرفة المفضلة
 elif st.session_state.page == "favs":
-    inject_adsense()
     if st.button("🔙 عودة للقاعة الرئيسية", key="back_from_favs"): 
         st.session_state.page = "main"
         st.rerun()
@@ -314,4 +303,4 @@ elif st.session_state.page == "favs":
                 speak(w['eng'])
     else:
         st.info("لم تقم بإضافة أي كلمات للمفضلة بعد.")
-                 
+    
